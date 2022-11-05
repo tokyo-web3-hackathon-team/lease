@@ -8,19 +8,22 @@ class LendPage extends HookConsumerWidget {
   LendPage({super.key});
   final textEditingController = TextEditingController();
   final returnFee = 0.01;
+  final now = DateTime.now().add(const Duration(days: 1));
 
   Future _getDate(
       BuildContext context, ValueNotifier<DateTime> rentalPeriod) async {
-    final initialDate = DateTime.now();
+    final initialDate = now;
     final newDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: DateTime(DateTime.now().year - 3),
-      lastDate: DateTime(DateTime.now().year + 3),
+      firstDate: DateTime(now.day),
+      lastDate: DateTime(now.year + 3),
+      selectableDayPredicate: (DateTime date) =>
+          date.compareTo(DateTime.now()) > 0 ? true : false,
     );
     if (newDate != null) {
       textEditingController.text = newDate.toString();
-      rentalPeriod.value = newDate;
+      // rentalPeriod.value = newDate;
     } else {
       return;
     }
@@ -30,8 +33,13 @@ class LendPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final contractAddress = useState("");
     final tokenId = useState("");
-    final rentalPeriod = useState(DateTime.now());
+    final rentalPeriod = useState(now);
     final rentalFee = useState(0.00);
+
+    useEffect(() {
+      textEditingController.text = now.toString();
+    }, []);
+
     return Padding(
       padding: const EdgeInsets.all(40.0),
       child: Form(
@@ -47,7 +55,7 @@ class LendPage extends HookConsumerWidget {
             ),
             TextFormField(
               onTap: () async {
-                // FocusScope.of(context).requestFocus(new FocusNode());
+                FocusScope.of(context).requestFocus(FocusNode());
                 await _getDate(context, rentalPeriod);
               },
               controller: textEditingController,
@@ -59,6 +67,8 @@ class LendPage extends HookConsumerWidget {
               ],
               decoration: const InputDecoration(labelText: 'rental fee'),
               onChanged: (e) => rentalFee.value = double.parse(e),
+              // initialValue: rentalFee != null ? rentalFee.value.toString() : "",
+              initialValue: rentalFee.value.toString(),
             ),
             TextFormField(
               enabled: false,
