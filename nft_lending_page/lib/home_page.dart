@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:nft_lending_page/borrow_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.title});
+import 'lend_page.dart';
+
+class HomePage extends HookWidget {
+  HomePage({super.key, required this.title});
   final String title;
+  final List<Widget> tabList = [
+    const Tab(child: Text('Borrow')),
+    const Tab(child: Text('Lend')),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final controller = useTabController(initialLength: tabList.length);
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -17,15 +26,22 @@ class HomePage extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: [
+          TabBar(
+            controller: controller,
+            tabs: tabList,
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: controller,
+              children: const [
+                BorrowPage(),
+                LendPage(),
+              ],
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

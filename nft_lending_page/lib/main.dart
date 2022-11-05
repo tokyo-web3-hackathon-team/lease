@@ -14,7 +14,7 @@ class NftLendingApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       darkTheme: ThemeData.dark(),
-      home: const HomePage(title: 'NFT LENDING'),
+      home: HomePage(title: 'NFT LENDING'),
     );
   }
 }
