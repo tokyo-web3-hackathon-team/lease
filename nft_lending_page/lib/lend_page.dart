@@ -2,28 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:nft_lending_page/lending_repository.dart';
 
 class LendPage extends HookConsumerWidget {
   LendPage({super.key});
   final textEditingController = TextEditingController();
   final returnFee = 0.01;
-  final now = DateTime.now().add(const Duration(days: 1));
+  final defaultRentalPeriod = DateTime.now().add(const Duration(days: 1));
 
   Future _getDate(
       BuildContext context, ValueNotifier<DateTime> rentalPeriod) async {
-    final initialDate = now;
+    final initialDate = defaultRentalPeriod;
     final newDate = await showDatePicker(
       context: context,
       initialDate: initialDate,
-      firstDate: DateTime(now.day),
-      lastDate: DateTime(now.year + 3),
+      firstDate: DateTime(defaultRentalPeriod.day),
+      lastDate: DateTime(defaultRentalPeriod.year + 3),
       selectableDayPredicate: (DateTime date) =>
-          date.compareTo(DateTime.now()) > 0 ? true : false,
+          date.compareTo(defaultRentalPeriod.add(const Duration(days: -1))) > 0
+              ? true
+              : false,
     );
     if (newDate != null) {
-      textEditingController.text = newDate.toString();
-      // rentalPeriod.value = newDate;
+      textEditingController.text = DateFormat('yyyy-MM-dd').format(newDate);
+      rentalPeriod.value = newDate;
     } else {
       return;
     }
@@ -33,11 +36,12 @@ class LendPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final contractAddress = useState("");
     final tokenId = useState("");
-    final rentalPeriod = useState(now);
+    final rentalPeriod = useState(defaultRentalPeriod);
     final rentalFee = useState(0.00);
 
     useEffect(() {
-      textEditingController.text = now.toString();
+      textEditingController.text =
+          DateFormat('yyyy-MM-dd').format(defaultRentalPeriod);
     }, []);
 
     return Padding(
@@ -67,7 +71,6 @@ class LendPage extends HookConsumerWidget {
               ],
               decoration: const InputDecoration(labelText: 'rental fee'),
               onChanged: (e) => rentalFee.value = double.parse(e),
-              // initialValue: rentalFee != null ? rentalFee.value.toString() : "",
               initialValue: rentalFee.value.toString(),
             ),
             TextFormField(
