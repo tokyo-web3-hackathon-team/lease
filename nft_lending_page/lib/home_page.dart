@@ -35,8 +35,8 @@ class HomePage extends HookWidget {
           Expanded(
             child: TabBarView(
               controller: controller,
-              children: const [
-                BorrowPage(),
+              children: [
+                const BorrowPage(),
                 LendPage(),
               ],
             ),
