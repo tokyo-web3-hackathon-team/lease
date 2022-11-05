@@ -43,7 +43,7 @@ class LendPage extends StatelessWidget {
             ),
             TextFormField(
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
               ],
               decoration: const InputDecoration(labelText: 'rental fee'),
             ),
