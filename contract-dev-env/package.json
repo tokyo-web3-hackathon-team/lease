@@ -1,0 +1,31 @@
+{
+  "name": "contract-dev-env",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tokyo-web3-hackathon-team/contract-dev-env.git"
+  },
+  "author": "koike.s",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tokyo-web3-hackathon-team/contract-dev-env/issues"
+  },
+  "homepage": "https://github.com/tokyo-web3-hackathon-team/contract-dev-env#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3",
+    "hardhat": "^2.12.1",
+    "dotenv": "^16.0.3",
+    "hardhat-contract-sizer": "^2.6.1",
+    "hardhat-gas-reporter": "^1.0.9"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "prettier": "^2.7.1",
+    "prettier-plugin-solidity": "^1.0.0-rc.1"
+  }
+}

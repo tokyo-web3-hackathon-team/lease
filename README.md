@@ -52,7 +52,8 @@ FW、パッケージ：Hardhat, OpenZeppelin
 ### Application Code
 
 [frontend](./nft_lending_page/)
-[contract](./contracts)
+
+[contract](./contract-dev-env/contracts)
 
 ### Test手順
 
