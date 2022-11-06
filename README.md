@@ -58,7 +58,7 @@ ProjectXはそうした課題を解決します。
   コントラクトウォレットがEOAの署名を検証するインターフェースの標準。Finalize済みであり、Openseaはじめアプリの対応が進みつつある。EIP1271に対応したVaultに借りたNFTを保管することによって、ownerであることを証明できるがtransferできないという状態にすることができる。
 ### Contract
 
-[LeaseService (Etherscan)](https://goerli.etherscan.io/address/0x61739f5ee253a554FeC6c727611c17DD9A24a3f7)
+[LeaseService (Etherscan)](https://goerli.etherscan.io/address/0xE45D10bae4Aa5C9a8C9016A39dD899485D9deac3)
 
 [LeaseVault (Etherscan)](https://goerli.etherscan.io/address/0xF0550c4e121f18E3d8181371BE011178D2eeA4dF)
 
