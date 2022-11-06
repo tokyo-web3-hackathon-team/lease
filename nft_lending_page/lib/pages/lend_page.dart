@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:nft_lending_page/components/primary_button.dart';
+import 'package:nft_lending_page/components/customized_text_form_field.dart';
 import 'package:nft_lending_page/lending_repository.dart';
 
 class LendPage extends HookConsumerWidget {
@@ -56,54 +58,62 @@ class LendPage extends HookConsumerWidget {
     }, []);
 
     return Padding(
-      padding: const EdgeInsets.all(40.0),
-      child: Form(
+      padding: const EdgeInsets.only(top: 30),
+      child: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'contract address'),
-              onChanged: (e) => contractAddress.value = e,
-            ),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'token id'),
-              onChanged: (e) => tokenId.value = e,
-            ),
-            TextFormField(
-              onTap: () async {
-                FocusScope.of(context).requestFocus(FocusNode());
-                await _getDate(context, rentalPeriod);
-              },
-              controller: textEditingController,
-              decoration: const InputDecoration(labelText: 'rental period'),
-            ),
-            TextFormField(
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
-              ],
-              decoration: const InputDecoration(labelText: 'rental fee'),
-              onChanged: (e) => rentalFee.value = double.parse(e),
-              initialValue: rentalFee.value.toString(),
-            ),
-            TextFormField(
-              enabled: false,
-              decoration:
-                  const InputDecoration(labelText: 'return fee:  xxx ETH'),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: CustomizedTextFormField(
+                hintText: 'contract address',
+                onChanged: (e) => contractAddress.value = e,
+              ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: ElevatedButton(
-                onPressed: () {
-                  ref.read(lendingRepositoryProvider).lend(
-                      contractAddress.value,
-                      tokenId.value,
-                      rentalPeriod.value,
-                      rentalFee.value,
-                      returnFee);
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                child: const Text("Lend"),
+              padding: const EdgeInsets.only(bottom: 20),
+              child: CustomizedTextFormField(
+                hintText: 'token id',
+                onChanged: (e) => tokenId.value = e,
               ),
-            )
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: CustomizedTextFormField(
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  await _getDate(context, rentalPeriod);
+                },
+                controller: textEditingController,
+                hintText: 'rental period',
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: CustomizedTextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
+                ],
+                hintText: 'rental fee',
+                onChanged: (e) => rentalFee.value = double.parse(e),
+                initialValue: rentalFee.value.toString(),
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 20),
+              child: CustomizedTextFormField(
+                enabled: false,
+                hintText: 'return fee:  xxx ETH',
+              ),
+            ),
+            PrimaryButton("Lend", onPressed: () {
+              ref.read(lendingRepositoryProvider).lend(
+                  contractAddress.value,
+                  tokenId.value,
+                  rentalPeriod.value,
+                  rentalFee.value,
+                  returnFee);
+            })
           ],
         ),
       ),
