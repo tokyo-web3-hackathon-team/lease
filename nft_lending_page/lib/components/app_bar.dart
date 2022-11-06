@@ -5,7 +5,6 @@ import 'package:nft_lending_page/providers.dart';
 import '../constants.dart';
 import '../models/wallet/wallet_state.dart';
 import 'app_bar_menu.dart';
-import 'app_bar_logo.dart';
 
 class AppBar extends HookConsumerWidget {
   const AppBar({Key? key}) : super(key: key);
@@ -26,7 +25,6 @@ class AppBar extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(children: const [
-            AppBarLogo(),
             SizedBox(width: AppConst.padding * 10),
             AppBarMenu(),
           ]),

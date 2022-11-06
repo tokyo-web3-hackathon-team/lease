@@ -43,8 +43,8 @@ class OfferController extends StateNotifier<OffersState> {
       }
       final url = Uri.https(AppConst.alchemyApiDomain,
           "nft/v2/${dotenv.env["ALCHEMY_API_KEY"]!}/getNFTMetadata", {
-        "contractAddress": contractAddress,
-        "tokenId": tokenId.toString(),
+        "contractAddress": "0x01c7851AE4D42f7B649ce168716C78fC25fE3D16",
+        "tokenId": 3.toString(),
         "refreshCache": false.toString()
       });
       http.Response response = await http.get(url);
@@ -131,8 +131,8 @@ class OfferController extends StateNotifier<OffersState> {
     }
   }
 
-  Future<bool> offerToLend(String nftContractAddress, String tokenId,
-      DateTime dueDate, double rentalFee) async {
+  Future<bool> offerToLend(String lenderAddress, String nftContractAddress,
+      String tokenId, DateTime dueDate, double rentalFee) async {
     final leaseContract = Contract(
       AppConst.leaseServiceContractAddress,
       Interface(leaseServiceAbi),
@@ -149,6 +149,18 @@ class OfferController extends StateNotifier<OffersState> {
       print(
           "TxHash: ${tx.hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,"
           " Rental Fee : $rentalFeeWei, Until : $toBlockNumber");
+      List<OfferState> offers = [...state.offers];
+      offers.add(
+        OfferState(
+          lenderAddress: lenderAddress,
+          assetAddress: nftContractAddress,
+          tokenId: int.parse(tokenId),
+          rentalPeriod: toBlockNumber,
+          dueDate: await _convertBlockNumberToDueDate(toBlockNumber),
+          rentalPrice: rentalFeeWei.toInt(),
+        ),
+      );
+      state = state.copyWith(offers: offers);
     } catch (ex) {
       print("Fail to offer. ${ex.toString()}");
       return false;
@@ -194,7 +206,7 @@ class OfferController extends StateNotifier<OffersState> {
 
   Future<DateTime> _convertBlockNumberToDueDate(int toBlockNumber) async {
     int fromBlockNumber = await provider!.getBlockNumber();
-    int diffDays = toBlockNumber - fromBlockNumber ~/ 15;
+    int diffDays = (toBlockNumber - fromBlockNumber) ~/ (15 * 86400);
 
     DateTime now = DateTime.now();
     DateTime dueDate =

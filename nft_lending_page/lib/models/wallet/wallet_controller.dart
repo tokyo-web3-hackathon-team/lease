@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web3/ethereum.dart';
-import 'package:flutter_web3/flutter_web3.dart';
 import 'package:flutter_web3/flutter_web3.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/constants.dart';
@@ -14,6 +10,13 @@ import 'wallet_state.dart';
 
 class WalletController extends StateNotifier<WalletState> {
   WalletController() : super(const WalletState());
+
+  String getLoginAddress() {
+    if (isLogin()) {
+      return state.loginAddress;
+    }
+    return "";
+  }
 
   bool isLogin() {
     return state.loginAddress.isEmpty ? false : true;
@@ -44,7 +47,7 @@ class WalletController extends StateNotifier<WalletState> {
       await ethereum!.walletSwitchChain(5);
     }
     String signedMessage =
-    await provider!.getSigner().signMessage("Login to NFT Fi");
+        await provider!.getSigner().signMessage("Login to NFT Fi");
 
     //TODO 署名の検証
 
@@ -76,8 +79,7 @@ class WalletController extends StateNotifier<WalletState> {
       print(payload);
       final borrowerAddress = state.loginAddress;
       final address = await _getContractWalletAddress(borrowerAddress);
-      await connector.approveSession(
-          chainId: 5, accounts: [address]);
+      await connector.approveSession(chainId: 5, accounts: [address]);
     });
 
     connector.on('session_update', (payload) async {
@@ -89,10 +91,15 @@ class WalletController extends StateNotifier<WalletState> {
       print('personal_sign');
       print(payload);
       try {
-        final a = payload as JsonRpcRequest;
-        print(a.toJson());
+        final jsonRpcRequest = payload as JsonRpcRequest;
+        Map<String, dynamic> json = jsonRpcRequest.toJson();
+        print(json);
         // 以下出力結果
         // {id: 1667733237761071, jsonrpc: 2.0, method: personal_sign, params: [0x57656c636f6d6520746f204f70656e536561210a0a436c69636b20746f207369676e20696e20616e642061636365707420746865204f70656e536561205465726d73206f6620536572766963653a2068747470733a2f2f6f70656e7365612e696f2f746f730a0a5468697320726571756573742077696c6c206e6f742074726967676572206120626c6f636b636861696e207472616e73616374696f6e206f7220636f737420616e792067617320666565732e0a0a596f75722061757468656e7469636174696f6e207374617475732077696c6c20726573657420616674657220323420686f7572732e0a0a57616c6c657420616464726573733a0a3078663035353063346531323166313865336438313831333731626530313131373864326565613464660a0a4e6f6e63653a0a35393634313339342d646531362d343863632d393333392d383836346635313562326335, 0xf0550c4e121f18e3d8181371be011178d2eea4df]}
+        String id = json["id"][0] as String;
+        String message = json["params"][0] as String;
+        String signedMessage = await provider!.getSigner().signMessage(message);
+        connector.sendCustomResponse(id: int.parse(id), result: signedMessage);
       } catch (ex) {
         print(ex);
       }
@@ -167,8 +174,7 @@ class WalletController extends StateNotifier<WalletState> {
         [AppConst.leaseServiceContractAddress, tokenId],
       );
       print(
-          "TxHash: ${tx
-              .hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,");
+          "TxHash: ${tx.hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,");
     } catch (ex) {
       print("Fail to offer. ${ex.toString()}");
       return false;
@@ -176,296 +182,6 @@ class WalletController extends StateNotifier<WalletState> {
     return true;
   }
 }
-
-const jsonAbi = '''[
-    {
-      "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "lender",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "collection",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "borrower",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "payment",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "expiration",
-          "type": "uint256"
-        }
-      ],
-      "name": "Lease",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "collection",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "until",
-          "type": "uint256"
-        }
-      ],
-      "name": "Offer",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "collection",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "OfferCanceled",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "previousOwner",
-          "type": "address"
-        },
-        {
-          "indexed": true,
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "borrowCollection",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "period",
-          "type": "uint256"
-        }
-      ],
-      "name": "borrow",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "lendingCollection",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "cancelOffer",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "eoa",
-          "type": "address"
-        }
-      ],
-      "name": "leaseVaultOf",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "lendingCollection",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "price",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "until",
-          "type": "uint256"
-        }
-      ],
-      "name": "offerLending",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "renounceOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "returnCollection",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "returnAsset",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "returnCollection",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "returnAssetBeforeExpiration",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newOwner",
-          "type": "address"
-        }
-      ],
-      "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "to",
-          "type": "address"
-        }
-      ],
-      "name": "withdraw",
-      "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    }
-  ]''';
 
 const erc721jsonAbi = '''[
     {
