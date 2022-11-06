@@ -8,4 +8,7 @@ class AppConst {
   static const Color colorOrange = Color.fromRGBO(251, 173, 80, 1);
 
   static const double padding = 10.0;
+
+  static const String leaseServiceContractAddress = "0x61739f5ee253a554FeC6c727611c17DD9A24a3f7";
+  static const String alchemyApiDomain = "eth-goerli.g.alchemy.com";
 }

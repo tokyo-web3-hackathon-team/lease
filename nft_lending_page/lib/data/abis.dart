@@ -1,5 +1,5 @@
 const leaseServiceEventAbi =  '''[
-    "event Offer(address collection, uint256 tokenId, uint256 price, uint until)"
+    "event Offer(address lender, address collection, uint256 tokenId, uint256 price, uint until)"
     ]''';
 
 const leaseServiceAbi = '''[
@@ -54,6 +54,12 @@ const leaseServiceAbi = '''[
     {
       "anonymous": false,
       "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "lender",
+          "type": "address"
+        },
         {
           "indexed": false,
           "internalType": "address",
@@ -159,6 +165,45 @@ const leaseServiceAbi = '''[
       "name": "cancelOffer",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "lender",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "collection",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "price",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "until",
+          "type": "uint256"
+        }
+      ],
+      "name": "isOfferActive",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
