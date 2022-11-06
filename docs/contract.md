@@ -3,9 +3,9 @@
 ### gas代
 
 以下前提とする
-Gas Price 10 gwei
-1 Ether  = 240,000 yen
-1 gas = 0.0024 yen
+- Gas Price 10 gwei
+- 1 Ether  = 240,000 yen
+- 1 gas = 0.0024 yen
 
 |メソッド|gasUsed|ガス代（日本円）|
 |---|---|---|

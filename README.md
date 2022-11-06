@@ -52,9 +52,9 @@ ProjectXはそうした課題を解決します。
 
 ### 前提となるEIP
 
-- [EIP721](https://eips.ethereum.org/EIPS/eip-721)
+- [EIP721](https://eips.ethereum.org/EIPS/eip-721)  
   対応するNFTの規格。現状1155など他規格には対応していない。
-- [EIP1271](https://eips.ethereum.org/EIPS/eip-1271)
+- [EIP1271](https://eips.ethereum.org/EIPS/eip-1271)  
   コントラクトウォレットがEOAの署名を検証するインターフェースの標準。Finalize済みであり、Openseaはじめアプリの対応が進みつつある。EIP1271に対応したVaultに借りたNFTを保管することによって、ownerであることを証明できるがtransferできないという状態にすることができる。
 ### Contract
 
@@ -83,3 +83,5 @@ npx hardhat test
 ### Projectアクセス
 
 [Web Application]()
+
+[Demo]()
