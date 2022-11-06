@@ -84,38 +84,24 @@ class FeedCard extends StatelessWidget {
     return Column(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           child: Image.asset(
             nft.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(height: AppConst.padding),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppConst.padding),
-          child: Row(
-            children: [
-              const SizedBox(width: AppConst.padding),
-              Text(nft.userAddress),
-              const Spacer(),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.favorite_border,
-                    color: Colors.white54,
-                  ),
-                  const SizedBox(width: AppConst.padding / 2),
-                  Text(nft.likes.toString()),
-                  const SizedBox(width: AppConst.padding),
-                  const Icon(
-                    Icons.chat_bubble_outline_rounded,
-                    color: Colors.white54,
-                  ),
-                  const SizedBox(width: AppConst.padding / 2),
-                  Text(nft.comments.toString()),
-                ],
-              ),
-            ],
+        FractionallySizedBox(
+          widthFactor: 1,
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: const BoxDecoration(
+              color: AppConst.colorGreyDark,
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
+            ),
           ),
         ),
         const SizedBox(height: AppConst.padding),
