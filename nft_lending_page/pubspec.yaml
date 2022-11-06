@@ -34,7 +34,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/nft/
-    - assets/logo/
     - assets/icon/
     - assets/env/.env
   # fonts:
