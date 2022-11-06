@@ -55,7 +55,7 @@ contract LeaseService is ILeaseService, Ownable, ReentrancyGuard {
             price,
             until
         );
-        emit Offer(lendingCollection, tokenId, price, until);
+        emit Offer(msg.sender, lendingCollection, tokenId, price, until);
     }
 
     function cancelOffer(address lendingCollection, uint256 tokenId) public {
@@ -200,5 +200,22 @@ contract LeaseService is ILeaseService, Ownable, ReentrancyGuard {
 
     function leaseVaultOf(address eoa) public view returns (address) {
         return _eoaToContractWallets[eoa];
+    }
+
+    function isOfferActive(
+        address lender,
+        address collection,
+        uint256 tokenId,
+        uint256 price,
+        uint until
+    ) public view returns (bool) {
+        bytes32 assetHash = AssetUtil.hashAsset(collection, tokenId);
+        OfferCondition memory offer = _offerInfo[assetHash];
+        return (offer.lender == lender &&
+            offer.collection == collection &&
+            offer.tokenId == tokenId &&
+            offer.price == price &&
+            offer.until == until &&
+            offer.until <= block.number);
     }
 }

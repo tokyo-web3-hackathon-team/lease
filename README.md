@@ -12,6 +12,8 @@ RentaFiにおけるwrapped NFTの発行やEIP4907を活用したサービスと�
 
 ## サービス設計
 
+### 概要
+
 GameFiにおけるスカラーシップなどNFTの貸し出しは既に多く行われておりニーズの高い取引と言えます。しかし、コントラクトによる自動執行がなされていない信用の上に成り立っている取引の存在やデファクトスタンダードとなる規格がないことなど課題が多いです。
 
 ProjectXはそうした課題を解決します。
@@ -19,27 +21,30 @@ ProjectXはそうした課題を解決します。
 ![概要](./images/サービス概要図.jpeg)
 
 **担保なしのトラストレスな一時保有**  
-コントラクトウォレットを活用することで転売されるリスクを回避した上でNFTの所有者を一時的に貸し出すことができます。
+コントラクトウォレットを活用することで転売されるリスクを回避した上でNFTの所有を一時的に貸し出すことができます。
 
 **既存NFTにおける活用**  
-また、NFTコントラクトの実装による解決では、後方互換性がなくサービス側も特別な対応を行う必要があります。BAYCなど既存のコミュニティの体験価値が高いNFTに対して、一時的な貸し出しを行えることが大きな特徴です。
+また、NFTコントラクトの実装による解決では、後方互換性がなくサービス側も特別な対応を行う必要があります。BAYCなど既存のコミュニティの体験価値が高いNFTに対して、一時的な貸し出しを行えることがProjectXの大きな特徴です。
 
 **分散化された運営**  
 サービスを維持するインセンティブを外部に提供し、運営によって提供されるべき維持管理機能を最小化します。
 具体的に、NFT返却時に手数料以上の還元を行うことで、第三者によって自動でNFTが返却されるように開発されています。
 
+### 補足
+
+[Appendix](./docs/appendix.md)
 
 ## 技術仕様など
 
 ### 使用したtech stacks 
 
-**frontend**
-開発言語：Dart
-FW、パッケージ：Flutter
+**frontend**  
+- 開発言語：Dart
+- FW、パッケージ：Flutter
 
-**contract**
-開発言語：solidity
-FW、パッケージ：Hardhat, OpenZeppelin
+**contract**  
+- 開発言語：Solidity, TypeScript
+- FW、パッケージ：Hardhat, OpenZeppelin
 
 ### 使用したBlockchain 
 
@@ -47,7 +52,17 @@ FW、パッケージ：Hardhat, OpenZeppelin
 
 ### 前提となるEIP
 
+- [EIP721](https://eips.ethereum.org/EIPS/eip-721)
+  対応するNFTの規格。現状1155など他規格には対応していない。
+- [EIP1271](https://eips.ethereum.org/EIPS/eip-1271)
+  コントラクトウォレットがEOAの署名を検証するインターフェースの標準。Finalize済みであり、Openseaはじめアプリの対応が進みつつある。EIP1271に対応したVaultに借りたNFTを保管することによって、ownerであることを証明できるがtransferできないという状態にすることができる。
 ### Contract
+
+[LeaseService (Etherscan)](https://goerli.etherscan.io/address/0x61739f5ee253a554FeC6c727611c17DD9A24a3f7)
+
+[ドキュメント_gas代の試算](./docs/contract.md)
+
+[実装_インターフェース](./contract-dev-env/contracts/ILeaseService.sol)
 
 ### Application Code
 
@@ -57,4 +72,14 @@ FW、パッケージ：Hardhat, OpenZeppelin
 
 ### Test手順
 
+#### Contract
+
+```
+cd contract-dev-env
+npm ci
+npx hardhat test
+```
+
 ### Projectアクセス
+
+[Web Application]()
