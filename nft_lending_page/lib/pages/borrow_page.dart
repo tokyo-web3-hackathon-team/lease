@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,11 +15,12 @@ class BorrowPage extends HookConsumerWidget {
   BorrowPage({super.key});
 
   final textEditingController = TextEditingController();
-  final returnFee = 0.05;
+  final returnFee = 0.005;
   final defaultRentalPeriod = DateTime.now().add(const Duration(days: 1));
   final hour = 23;
   final minute = 59;
   final second = 59;
+  final formatter = NumberFormat("#,##0.0000");
 
   Future _getDate(
       BuildContext context, ValueNotifier<DateTime> rentalPeriod) async {
@@ -52,7 +55,8 @@ class BorrowPage extends HookConsumerWidget {
         hour,
         minute,
         second));
-    final rentalFee = useState(BigInt.from(ref.watch(offerProvider).currentOffer?.rentalPrice ?? 0));
+    var rentalFeeEth = formatter.format(((ref.watch(offerProvider).currentOffer?.rentalPrice ?? 0) / pow(10, 18)) * (86400 / 15));
+    final rentalFeeWei = useState(BigInt.from(ref.watch(offerProvider).currentOffer?.rentalPrice ?? 0));
 
     useEffect(() {
       textEditingController.text =
@@ -89,13 +93,12 @@ class BorrowPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
-              initialValue: rentalFee.value.toString(),
+              initialValue: rentalFeeEth.toString(),
               enabled: false,
               inputFormats: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
               ],
               hintText: 'Rental Fee [ETH] (You receive from borrower.)',
-              onChanged: (e) => rentalFee.value = BigInt.parse(e),
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
@@ -119,7 +122,7 @@ class BorrowPage extends HookConsumerWidget {
                     ref
                         .read(offerProvider.notifier)
                         .borrow(contractAddress.value, tokenId.value,
-                            rentalPeriod.value, rentalFee.value)
+                            rentalPeriod.value, rentalFeeWei.value)
                         .then((bool result) {
                       if (result) {
                         ref.read(menuProvider.notifier).setCurrentIndex(1);

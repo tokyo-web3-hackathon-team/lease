@@ -100,7 +100,7 @@ class FeedCard extends StatelessWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  final formatter = NumberFormat("#,###.0000");
+  final formatter = NumberFormat("#,##0.0000");
   final OfferState offer;
   final void Function()? onPressed;
 
