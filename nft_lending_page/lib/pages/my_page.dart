@@ -33,7 +33,7 @@ class MyPage extends HookConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: PrimaryButton(
-                    "connect to Dapps",
+                    "Connect to Dapps",
                     onPressed: () {
                       ref
                           .watch(walletProvider.notifier)
