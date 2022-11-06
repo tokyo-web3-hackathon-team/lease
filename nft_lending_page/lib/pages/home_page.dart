@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:nft_lending_page/borrow_page.dart';
+import 'package:nft_lending_page/pages/borrow_page.dart';
 
-import 'lend_page.dart';
+import '../lend_page.dart';
 
 class HomePage extends HookWidget {
   HomePage({super.key, required this.title});
