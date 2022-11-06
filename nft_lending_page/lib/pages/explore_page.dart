@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
 import 'package:nft_lending_page/components/primary_button.dart';
+import 'package:nft_lending_page/models/offer.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
 
@@ -53,9 +55,9 @@ class ExplorePage extends HookConsumerWidget {
         crossAxisCount: _getCountForScreenType(screenStatus),
         crossAxisSpacing: AppConst.padding,
         mainAxisSpacing: AppConst.padding,
-        itemCount: dummyNFT.length,
+        itemCount: dummyOffer.length,
         itemBuilder: (ctx, index) {
-          return FeedCard(nft: dummyNFT[index]);
+          return FeedCard(offer: dummyOffer[index]);
         },
       ),
     );
@@ -72,22 +74,24 @@ class ExplorePage extends HookConsumerWidget {
 }
 
 class FeedCard extends StatelessWidget {
-  final NFT nft;
+  final Offer offer;
 
   const FeedCard({
     Key? key,
-    required this.nft,
+    required this.offer,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String dateTime = DateFormat('yyyy-MM-dd')
+        .format(DateTime.fromMillisecondsSinceEpoch(offer.rentalPeriod));
     return Column(
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           child: Image.asset(
-            nft.imageUrl,
+            offer.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
@@ -95,7 +99,7 @@ class FeedCard extends StatelessWidget {
           widthFactor: 1,
           child: Container(
             width: 100,
-            height: 160,
+            height: 120,
             decoration: const BoxDecoration(
               color: AppConst.colorGreyDark,
               borderRadius: BorderRadius.only(
@@ -106,13 +110,9 @@ class FeedCard extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  const RentalCondition(
-                      title: "rental period", value: "2022/11/16"),
-                  const RentalCondition(
-                      title: "rental fee", value: "0.1 ETH / day"),
-                  const RentalCondition(title: "return fee", value: "0.1 ETH"),
-                  const RentalCondition(
-                      title: "total fee", value: "1 ETH / 10days"),
+                  RentalCondition(title: "rental period", value: "${dateTime}"),
+                  RentalCondition(
+                      title: "rental price", value: "${offer.rentalPrice} ETH"),
                   PrimaryButton("Borrow", onPressed: () {
                     //
                   })
