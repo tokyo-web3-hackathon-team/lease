@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
-import 'package:nft_lending_page/components/customized_text_form_field.dart';
 import 'package:nft_lending_page/components/primary_button.dart';
 import 'package:nft_lending_page/constants.dart';
 import 'package:nft_lending_page/models/enum/lease_type.dart';
@@ -15,7 +13,6 @@ class MyPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final walletConnectUrl = useState("");
-    final leaseType = useState(LeaseType.lend);
 
     return Scaffold(
       body: Column(
@@ -33,7 +30,7 @@ class MyPage extends HookConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: PrimaryButton(
-                    "connect to Dapps",
+                    "Connect to Dapps",
                     onPressed: () {
                       ref
                           .watch(walletProvider.notifier)

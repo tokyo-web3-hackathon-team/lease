@@ -72,7 +72,7 @@ class LendPage extends HookConsumerWidget {
           .getApproved(contractAddress.value, tokenId.value)
           .then((String approved) {
         isApproved.value = approved == AppConst.leaseServiceContractAddress;
-        print("approved address ${approved}");
+        print("approved address $approved");
       });
     }, [contractAddress.value, tokenId.value]);
 

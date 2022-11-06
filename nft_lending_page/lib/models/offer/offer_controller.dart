@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_web3/ethers.dart';
 import 'package:flutter_web3/flutter_web3.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -69,7 +68,8 @@ class OfferController extends StateNotifier<OffersState> {
   }
 
   Future<String> _getImageUrl(dynamic responseJson) async {
-    if (responseJson["metadata"] != null && responseJson["metadata"]["image"] != null) {
+    if (responseJson["metadata"] != null &&
+        responseJson["metadata"]["image"] != null) {
       return responseJson["metadata"]["image"];
     }
     final gateway = responseJson["tokenUri"]["gateway"];
@@ -199,7 +199,7 @@ class OfferController extends StateNotifier<OffersState> {
     DateTime fromDate = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
     DateTime toDate =
         DateTime(dueDate.year, dueDate.month, dueDate.day, 0, 0, 0, 0);
-    int diffBlocks = dueDate.difference(fromDate).inSeconds ~/ 15;
+    int diffBlocks = toDate.difference(fromDate).inSeconds ~/ 15;
     int fromBlockNumber = await provider!.getBlockNumber();
     return fromBlockNumber + diffBlocks;
   }
