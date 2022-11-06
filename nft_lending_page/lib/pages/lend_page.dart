@@ -61,16 +61,19 @@ class LendPage extends HookConsumerWidget {
           DateFormat('yyyy-MM-dd').format(defaultRentalPeriod);
     }, []);
     useEffect(() {
-      if (!ref.read(walletProvider.notifier).isLogin() || contractAddress.value == "" || tokenId.value == "") {
+      if (!ref.read(walletProvider.notifier).isLogin() ||
+          contractAddress.value == "" ||
+          tokenId.value == "") {
         print("Cannot get approved address: not initialized");
         return;
       }
-      ref.read(walletProvider.notifier)
-        .getApproved(contractAddress.value, tokenId.value)
-        .then((String approved) {
-          isApproved.value = approved == AppConst.leaseServiceContractAddress;
-          print("approved address ${approved}");
-        });
+      ref
+          .read(walletProvider.notifier)
+          .getApproved(contractAddress.value, tokenId.value)
+          .then((String approved) {
+        isApproved.value = approved == AppConst.leaseServiceContractAddress;
+        print("approved address ${approved}");
+      });
     }, [contractAddress.value, tokenId.value]);
 
     return Scaffold(
@@ -122,62 +125,76 @@ class LendPage extends HookConsumerWidget {
                   },
                 ),
                 const SizedBox(width: 10),
-                PrimaryButton("Approve", onPressed: !isApproved.value ? () {
-                  if (ref.read(walletProvider.notifier).isLogin()) {
-                    ref
-                      .read(walletProvider.notifier)
-                      .approve(contractAddress.value, tokenId.value)
-                      .then((bool result) {
-                        if (result) {
-                          isApproved.value = result;
-                        } else {
-                          showDialog<void>(
-                            context: context,
-                            builder: (_) {
-                              return const FailToLendDialogForTx();
-                            });
-                        }
-                      });
-                  } else {
-                    showDialog<void>(
-                        context: context,
-                        builder: (_) {
-                          return const FailToLendDialogForLogin();
-                        }).then((value) {
-                      ref.read(walletProvider.notifier).login();
-                    });
-                  }
-                } : null),
+                PrimaryButton("Approve",
+                    onPressed: !isApproved.value
+                        ? () {
+                            if (ref.read(walletProvider.notifier).isLogin()) {
+                              ref
+                                  .read(walletProvider.notifier)
+                                  .approve(contractAddress.value, tokenId.value)
+                                  .then((bool result) {
+                                if (result) {
+                                  isApproved.value = result;
+                                } else {
+                                  showDialog<void>(
+                                      context: context,
+                                      builder: (_) {
+                                        return const FailToLendDialogForTx();
+                                      });
+                                }
+                              });
+                            } else {
+                              showDialog<void>(
+                                  context: context,
+                                  builder: (_) {
+                                    return const FailToLendDialogForLogin();
+                                  }).then((value) {
+                                ref.read(walletProvider.notifier).login();
+                              });
+                            }
+                          }
+                        : null),
                 const SizedBox(width: 10),
-                PrimaryButton("Lend", onPressed: isApproved.value ? () {
-                  if (ref.read(walletProvider.notifier).isLogin()) {
-                    ref
-                        .read(offerProvider.notifier)
-                        .offerToLend(contractAddress.value, tokenId.value,
-                            rentalPeriod.value, rentalFee.value)
-                        .then((bool result) {
-                      if (result) {
-                        ref.read(menuProvider.notifier).setCurrentIndex(1);
-                        Navigator.popUntil(
-                            context, ModalRoute.withName(Routes.homePage));
-                      } else {
-                        showDialog<void>(
-                            context: context,
-                            builder: (_) {
-                              return const FailToLendDialogForTx();
-                            });
-                      }
-                    });
-                  } else {
-                    showDialog<void>(
-                        context: context,
-                        builder: (_) {
-                          return const FailToLendDialogForLogin();
-                        }).then((value) {
-                      ref.read(walletProvider.notifier).login();
-                    });
-                  }
-                } : null),
+                PrimaryButton("Lend",
+                    onPressed: isApproved.value
+                        ? () {
+                            if (ref.read(walletProvider.notifier).isLogin()) {
+                              ref
+                                  .read(offerProvider.notifier)
+                                  .offerToLend(
+                                      ref
+                                          .read(walletProvider.notifier)
+                                          .getLoginAddress(),
+                                      contractAddress.value,
+                                      tokenId.value,
+                                      rentalPeriod.value,
+                                      rentalFee.value)
+                                  .then((bool result) {
+                                if (result) {
+                                  ref
+                                      .read(menuProvider.notifier)
+                                      .setCurrentIndex(1);
+                                  Navigator.popUntil(context,
+                                      ModalRoute.withName(Routes.homePage));
+                                } else {
+                                  showDialog<void>(
+                                      context: context,
+                                      builder: (_) {
+                                        return const FailToLendDialogForTx();
+                                      });
+                                }
+                              });
+                            } else {
+                              showDialog<void>(
+                                  context: context,
+                                  builder: (_) {
+                                    return const FailToLendDialogForLogin();
+                                  }).then((value) {
+                                ref.read(walletProvider.notifier).login();
+                              });
+                            }
+                          }
+                        : null),
               ],
             )
           ],

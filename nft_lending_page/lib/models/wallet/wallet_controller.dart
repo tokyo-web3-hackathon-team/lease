@@ -15,6 +15,13 @@ import 'wallet_state.dart';
 class WalletController extends StateNotifier<WalletState> {
   WalletController() : super(const WalletState());
 
+  String getLoginAddress() {
+    if (isLogin()) {
+      return state.loginAddress;
+    }
+    return "";
+  }
+
   bool isLogin() {
     return state.loginAddress.isEmpty ? false : true;
   }

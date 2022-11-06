@@ -105,8 +105,8 @@ class OfferController extends StateNotifier<OffersState> {
     }
   }
 
-  Future<bool> offerToLend(String nftContractAddress, String tokenId,
-      DateTime dueDate, double rentalFee) async {
+  Future<bool> offerToLend(String lenderAddress, String nftContractAddress,
+      String tokenId, DateTime dueDate, double rentalFee) async {
     final leaseContract = Contract(
       AppConst.leaseServiceContractAddress,
       Interface(leaseServiceAbi),
@@ -123,6 +123,17 @@ class OfferController extends StateNotifier<OffersState> {
       print(
           "TxHash: ${tx.hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,"
           " Rental Fee : $rentalFeeWei, Until : $toBlockNumber");
+      List<OfferState> offers = [...state.offers];
+      offers.add(
+        OfferState(
+          lenderAddress: lenderAddress,
+          assetAddress: nftContractAddress,
+          tokenId: int.parse(tokenId),
+          rentalPeriod: toBlockNumber,
+          rentalPrice: rentalFeeWei.toInt(),
+        ),
+      );
+      state = state.copyWith(offers: offers);
     } catch (ex) {
       print("Fail to offer. ${ex.toString()}");
       return false;
