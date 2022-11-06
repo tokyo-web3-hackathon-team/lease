@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/providers.dart';
 
 import 'explore_page.dart';
-import 'lend_page.dart';
 import 'my_page.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -12,7 +11,6 @@ class HomePage extends HookConsumerWidget {
   final List<Widget> _menu = [
     const ExplorePage(),
     const MyPage(),
-    LendPage(),
   ];
 
   @override

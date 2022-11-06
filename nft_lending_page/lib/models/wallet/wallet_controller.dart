@@ -49,4 +49,23 @@ class WalletController extends StateNotifier<WalletState> {
     // TODO: Dappsへ接続する処理を記述
     return true;
   }
+
+  Future<bool> lend(String contractAddress, String tokenId, DateTime dueDate,
+      double rentalFee, double returnFee) async {
+    contractAddress = '0x751A28264d7cC0fc3f7Db0936d08e094E616c3B7';
+
+    final contract = Contract(
+      contractAddress,
+      Interface(""),
+      provider!.getSigner(),
+    );
+
+    String contractWalletAddress = await contract.call<String>(
+      'leaseVaultOf',
+      [state.loginAddress],
+    ); // 2886780594123782414119
+    print("Contract Wallet Address : $contractWalletAddress");
+
+    return true;
+  }
 }
