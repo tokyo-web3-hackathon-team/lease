@@ -44,4 +44,9 @@ class WalletController extends StateNotifier<WalletState> {
 
     return true;
   }
+
+  Future<bool> connectDapps() async {
+    // TODO: Dappsへ接続する処理を記述
+    return true;
+  }
 }
