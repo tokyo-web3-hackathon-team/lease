@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_web3/flutter_web3.dart';
@@ -141,7 +142,7 @@ class OfferController extends StateNotifier<OffersState> {
 
     int toBlockNumber = await _convertDueDateToBlockNumber(dueDate);
     rentalFee = rentalFee / (86400 / 15); // ETH/block
-    BigInt rentalFeeWei = EthUtils.parseEther(rentalFee.toString()).toBigInt; // wei/block
+    BigInt rentalFeeWei = BigInt.from(rentalFee * pow(10, 18));
     try {
       TransactionResponse tx = await leaseContract.send(
         'offerLending',
