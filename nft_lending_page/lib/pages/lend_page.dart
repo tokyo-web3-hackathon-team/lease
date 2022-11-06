@@ -107,14 +107,17 @@ class LendPage extends HookConsumerWidget {
                   hintText: 'return fee:  xxx ETH',
                 ),
               ),
-              PrimaryButton("Lend", onPressed: () {
-                ref.read(lendingRepositoryProvider).lend(
-                    contractAddress.value,
-                    tokenId.value,
-                    rentalPeriod.value,
-                    rentalFee.value,
-                    returnFee);
-              }),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: PrimaryButton("Lend", onPressed: () {
+                  ref.read(lendingRepositoryProvider).lend(
+                      contractAddress.value,
+                      tokenId.value,
+                      rentalPeriod.value,
+                      rentalFee.value,
+                      returnFee);
+                }),
+              ),
               PrimaryButton("Back", onPressed: () {
                 Navigator.pop(context);
               })
