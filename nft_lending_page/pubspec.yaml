@@ -20,6 +20,7 @@ dependencies:
   flutter_web3: ^2.1.9
   flutter_riverpod: ^2.1.1
   walletconnect_dart: ^0.0.11
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
