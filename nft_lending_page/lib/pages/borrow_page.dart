@@ -66,11 +66,17 @@ class BorrowPage extends HookConsumerWidget {
             const app.AppBar(),
             const SizedBox(height: 100),
             CustomizedTextFormField(
+              initialValue:
+                  ref.watch(offerProvider).currentOffer?.assetAddress ?? "",
+              enabled: false,
               hintText: 'NFT Contract Address (0x38ai...dkjk)',
               onChanged: (e) => contractAddress.value = e,
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
+              initialValue:
+                  ref.watch(offerProvider).currentOffer?.tokenId.toString(),
+              enabled: false,
               hintText: 'Token ID',
               onChanged: (e) => tokenId.value = e,
             ),
@@ -85,6 +91,9 @@ class BorrowPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
+              initialValue:
+                  ref.watch(offerProvider).currentOffer?.rentalPrice.toString(),
+              enabled: false,
               inputFormats: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
               ],
@@ -93,9 +102,9 @@ class BorrowPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
+              initialValue: returnFee.toString(),
               enabled: false,
               hintText: 'Return Fee [ETH] (Borrower pay for tx of return.)',
-              initialValue: returnFee.toString(),
             ),
             const SizedBox(height: 20),
             Row(
@@ -108,12 +117,12 @@ class BorrowPage extends HookConsumerWidget {
                   },
                 ),
                 const SizedBox(width: 10),
-                PrimaryButton("Lend", onPressed: () {
+                PrimaryButton("Borrow", onPressed: () {
                   if (ref.read(walletProvider.notifier).isLogin()) {
                     ref
                         .read(walletProvider.notifier)
-                        .offerToLend(contractAddress.value, tokenId.value,
-                            rentalPeriod.value, rentalFee.value)
+                        .borrow(contractAddress.value, tokenId.value,
+                            rentalPeriod.value)
                         .then((bool result) {
                       if (result) {
                         ref.read(menuProvider.notifier).setCurrentIndex(1);
@@ -152,7 +161,7 @@ class FailToLendDialogForLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Fail to lend !!'),
+      title: const Text('Fail to borrow !!'),
       content: const Text('Please connect to wallet before lend.'),
       actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[
@@ -171,7 +180,7 @@ class FailToLendDialogForTx extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Fail to lend !!'),
+      title: const Text('Fail to borrow !!'),
       content: const Text('Please confirm parameters and try again.'),
       actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[

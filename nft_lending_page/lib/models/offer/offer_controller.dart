@@ -7,11 +7,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:nft_lending_page/constants.dart';
 import 'package:nft_lending_page/data/abis.dart';
-import 'package:nft_lending_page/models/offer.dart';
 import 'package:nft_lending_page/models/offer/offer_state.dart';
 
 class OfferController extends StateNotifier<OffersState> {
   OfferController() : super(const OffersState());
+
+  setCurrentOffer(OfferState currentOffer) {
+    state = state.copyWith(currentOffer: currentOffer);
+  }
 
   Future<void> getOffers() async {
     final web3provider = Web3Provider(ethereum!);

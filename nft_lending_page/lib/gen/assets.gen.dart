@@ -47,6 +47,16 @@ class $AssetsDummyGen {
       [post1, post10, post2, post3, post4, post5, post6, post7, post8, post9];
 }
 
+class $AssetsEnvGen {
+  const $AssetsEnvGen();
+
+  /// File path: assets/env/.env
+  String get env => 'assets/env/.env';
+
+  /// List of all assets
+  List<String> get values => [env];
+}
+
 class $AssetsIconGen {
   const $AssetsIconGen();
 
@@ -127,6 +137,7 @@ class Assets {
   Assets._();
 
   static const $AssetsDummyGen dummy = $AssetsDummyGen();
+  static const $AssetsEnvGen env = $AssetsEnvGen();
   static const $AssetsIconGen icon = $AssetsIconGen();
   static const $AssetsLogoGen logo = $AssetsLogoGen();
   static const $AssetsNftGen nft = $AssetsNftGen();

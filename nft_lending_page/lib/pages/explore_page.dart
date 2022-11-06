@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
 import 'package:nft_lending_page/components/primary_button.dart';
 import 'package:nft_lending_page/models/offer.dart';
+import 'package:nft_lending_page/models/offer/offer_controller.dart';
 import 'package:nft_lending_page/models/offer/offer_state.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
@@ -65,9 +68,19 @@ class ExplorePage extends HookConsumerWidget {
         mainAxisSpacing: AppConst.padding,
         itemCount: offers.length,
         itemBuilder: (ctx, index) {
-          return FeedCard(offer: offers[index]);
+          return _buildFeedCard(context, ref, offers[index]);
         },
       ),
+    );
+  }
+
+  Widget _buildFeedCard(BuildContext context, WidgetRef ref, OfferState offer) {
+    return FeedCard(
+      offer: offer,
+      onPressed: () {
+        ref.read(offerProvider.notifier).setCurrentOffer(offer);
+        Navigator.pushNamed(context, Routes.borrowPage);
+      },
     );
   }
 
@@ -82,12 +95,14 @@ class ExplorePage extends HookConsumerWidget {
 }
 
 class FeedCard extends StatelessWidget {
-  final OfferState offer;
-
   const FeedCard({
     Key? key,
     required this.offer,
+    required this.onPressed,
   }) : super(key: key);
+
+  final OfferState offer;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +137,7 @@ class FeedCard extends StatelessWidget {
                   RentalCondition(title: "rental period", value: "${dateTime}"),
                   RentalCondition(
                       title: "rental price", value: "${offer.rentalPrice} ETH"),
-                  PrimaryButton("Borrow", onPressed: () {
-                    //
-                  })
+                  PrimaryButton("Borrow", onPressed: onPressed)
                 ],
               ),
             ),
