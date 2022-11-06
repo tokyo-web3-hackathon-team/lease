@@ -33,7 +33,7 @@ class CustomizedTextFormField extends StatelessWidget {
         height: 35,
         padding: const EdgeInsets.symmetric(horizontal: AppConst.padding),
         child: TextFormField(
-          readOnly: enabled ?? true,
+          readOnly: !(enabled ?? true),
           initialValue: initialValue,
           inputFormatters: inputFormats,
           controller: controller,
