@@ -87,3 +87,5 @@ npx hardhat test
 ### Projectアクセス
 
 [Web Application](https://tokyo-web3-hackathon-team.github.io/nft-rental/)
+
+[Demo](https://www.loom.com/share/60a3f4d380824dc3be7e6694d15ddfbf)
