@@ -5,14 +5,17 @@ import 'package:nft_lending_page/constants.dart';
 class CustomizedTextFormField extends StatelessWidget {
   const CustomizedTextFormField(
       {super.key,
+      this.text,
       this.initialValue,
       this.hintText,
       this.enabled,
       this.onChanged,
       this.onTap,
       this.controller,
-      this.inputFormatters,
+      this.inputFormats,
       this.width});
+
+  final String? text;
   final String? initialValue;
   final String? hintText;
   final bool? enabled;
@@ -20,45 +23,49 @@ class CustomizedTextFormField extends StatelessWidget {
   final Function()? onTap;
   final TextEditingController? controller;
   final double? width;
-  final List<TextInputFormatter>? inputFormatters;
+  final List<TextInputFormatter>? inputFormats;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 35,
-      width: width ?? 600,
-      child: TextFormField(
-        initialValue: initialValue,
-        inputFormatters: inputFormatters,
-        controller: controller,
-        style: const TextStyle(color: Colors.white, fontSize: 12),
-        decoration: InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 12),
-          border: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-              width: 0,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 550),
+      child: Container(
+        height: 35,
+        padding: const EdgeInsets.symmetric(horizontal: AppConst.padding),
+        child: TextFormField(
+          readOnly: enabled ?? true,
+          initialValue: initialValue,
+          inputFormatters: inputFormats,
+          controller: controller,
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+          decoration: InputDecoration(
+            hintText: hintText,
+            hintStyle: const TextStyle(color: Colors.grey, fontSize: 12),
+            border: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 0,
+              ),
             ),
-          ),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-              width: 0,
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 0,
+              ),
             ),
-          ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
-              width: 0,
+            focusedBorder: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.transparent,
+                width: 0,
+              ),
             ),
+            fillColor: AppConst.colorGreyDark,
+            filled: true,
+            contentPadding: const EdgeInsets.only(top: 30, left: 30),
           ),
-          fillColor: AppConst.colorGreyDark,
-          filled: true,
-          contentPadding: const EdgeInsets.only(top: 30, left: 30),
+          onChanged: onChanged,
+          onTap: onTap,
         ),
-        onChanged: onChanged,
-        onTap: onTap,
       ),
     );
   }

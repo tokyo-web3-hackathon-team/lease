@@ -9,8 +9,8 @@ import 'package:nft_lending_page/components/customized_text_form_field.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/providers.dart';
 
-class LendPage extends HookConsumerWidget {
-  LendPage({super.key});
+class BorrowPage extends HookConsumerWidget {
+  BorrowPage({super.key});
 
   final textEditingController = TextEditingController();
   final returnFee = 0.05;

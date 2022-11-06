@@ -10,7 +10,6 @@ class PrimaryButton extends ElevatedButton {
           onPressed: onPressed,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 150),
-            child: Expanded(
               child: Container(
                 height: 35,
                 padding:
@@ -28,6 +27,5 @@ class PrimaryButton extends ElevatedButton {
                 ),
               ),
             ),
-          ),
         );
 }
