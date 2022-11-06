@@ -1,57 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nft_lending_page/providers.dart';
 
 import '../constants.dart';
 
-class AppBarMenu extends StatefulWidget {
+class AppBarMenu extends HookConsumerWidget {
   const AppBarMenu({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _AppBarMenuState createState() => _AppBarMenuState();
-}
-
-class _AppBarMenuState extends State<AppBarMenu> {
-  int _currentSelected = 1;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(menuProvider) as int;
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         MenuItem(
-          currentIndex: _currentSelected,
-          itemIndex: 1,
+          currentIndex: currentIndex,
+          itemIndex: 0,
           title: 'Explore',
           iconUrl: 'assets/icon/search.svg',
           onPress: () {
-            setState(() {
-              _currentSelected = 1;
-            });
+            ref.read(menuProvider.notifier).setCurrentIndex(0);
           },
         ),
         MenuItem(
-          currentIndex: _currentSelected,
-          itemIndex: 2,
+          currentIndex: currentIndex,
+          itemIndex: 1,
           title: 'MyPage',
           iconUrl: 'assets/icon/statistic.svg',
           onPress: () {
-            setState(() {
-              _currentSelected = 2;
-            });
+            ref.read(menuProvider.notifier).setCurrentIndex(1);
           },
         ),
         MenuItem(
-          currentIndex: _currentSelected,
-          itemIndex: 3,
+          currentIndex: currentIndex,
+          itemIndex: 2,
           title: 'Settings',
           iconUrl: 'assets/icon/settings2.svg',
           onPress: () {
-            setState(
-              () {
-                _currentSelected = 3;
-              },
-            );
+            ref.read(menuProvider.notifier).setCurrentIndex(2);
           },
         ),
       ],
