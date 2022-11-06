@@ -3,7 +3,7 @@ import 'package:nft_lending_page/models/menu/menu_controller.dart';
 
 import 'models/wallet/wallet_controller.dart';
 
-import 'models/OfferController.dart';
+import 'models/offerController.dart';
 
 final menuProvider = StateNotifierProvider((ref) => MenuController());
 final offerProvider = StateNotifierProvider((ref) => OfferController());
