@@ -41,8 +41,6 @@ class OfferController extends StateNotifier<OffersState> {
       if (!isActive) {
         continue;
       }
-      contractAddress = "0x01c7851AE4D42f7B649ce168716C78fC25fE3D16";
-      tokenId = 3;
       final url = Uri.https(AppConst.alchemyApiDomain,
           "nft/v2/${dotenv.env["ALCHEMY_API_KEY"]!}/getNFTMetadata", {
         "contractAddress": contractAddress,
@@ -52,7 +50,11 @@ class OfferController extends StateNotifier<OffersState> {
       http.Response response = await http.get(url);
       _response(response);
       var responseJson = json.decode(response.body);
-      final imageUrl = responseJson["metadata"]["image"];
+      var imageUrl = await _getImageUrl(responseJson);
+      imageUrl = _convertIpfsToHttps(imageUrl);
+      if (imageUrl.isEmpty) {
+        continue;
+      }
       final offer = OfferState(
           assetAddress: contractAddress,
           tokenId: tokenId,
@@ -63,8 +65,32 @@ class OfferController extends StateNotifier<OffersState> {
           rentalPrice: rentalPrice);
       offers.add(offer);
     }
-
     state = state.copyWith(offers: offers);
+  }
+
+  Future<String> _getImageUrl(dynamic responseJson) async {
+    if (responseJson["metadata"] != null && responseJson["metadata"]["image"] != null) {
+      return responseJson["metadata"]["image"];
+    }
+    final gateway = responseJson["tokenUri"]["gateway"];
+    if (gateway == null || gateway.toString().isEmpty) {
+      return "";
+    }
+    http.Response response = await http.get(Uri.parse(gateway));
+    var metadataJson = json.decode(response.body);
+    var imageUrl = metadataJson["image"];
+    if (imageUrl == null) {
+      return "";
+    }
+    return imageUrl;
+  }
+
+  String _convertIpfsToHttps(String imageUrl) {
+    imageUrl = imageUrl.replaceFirst("ipfs://", "https://ipfs.io/ipfs/");
+    if (imageUrl.startsWith("http")) {
+      return imageUrl;
+    }
+    return "";
   }
 
   Future<bool> _isActiveOffer(String lender, String collection, int tokenId,
