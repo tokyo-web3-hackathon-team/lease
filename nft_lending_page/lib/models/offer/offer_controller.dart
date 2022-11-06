@@ -207,7 +207,6 @@ class OfferController extends StateNotifier<OffersState> {
   Future<DateTime> _convertBlockNumberToDueDate(int toBlockNumber) async {
     int fromBlockNumber = await provider!.getBlockNumber();
     int diffDays = (toBlockNumber - fromBlockNumber) ~/ (15 * 86400);
-
     DateTime now = DateTime.now();
     DateTime dueDate =
         DateTime(now.year, now.month, now.day + diffDays, 0, 0, 0, 0);

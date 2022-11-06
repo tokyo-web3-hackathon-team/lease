@@ -36,7 +36,6 @@ flutter:
     - assets/nft/
     - assets/logo/
     - assets/icon/
-    - assets/dummy/
     - assets/env/.env
   # fonts:
   #   - family: Schyler
