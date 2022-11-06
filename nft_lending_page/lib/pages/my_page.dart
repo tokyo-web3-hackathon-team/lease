@@ -33,7 +33,7 @@ class MyPage extends HookConsumerWidget {
               ),
             ),
             PrimaryButton("connect to Dapps", onPressed: () {
-              ref.watch(walletProvider.notifier).connectDapps();
+              ref.watch(walletProvider.notifier).connectDapps(walletConnectUrl.value);
             })
           ],
         ),

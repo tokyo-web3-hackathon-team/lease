@@ -1,6 +1,15 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web3/ethereum.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_web3/flutter_web3.dart';
+import 'package:flutter_web3/flutter_web3.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nft_lending_page/constants.dart';
+import 'package:nft_lending_page/data/abis.dart';
+import 'package:walletconnect_dart/walletconnect_dart.dart';
+
 import 'wallet_state.dart';
 
 class WalletController extends StateNotifier<WalletState> {
@@ -45,8 +54,84 @@ class WalletController extends StateNotifier<WalletState> {
     return true;
   }
 
-  Future<bool> connectDapps() async {
+  Future<bool> connectDapps(String url) async {
     // TODO: Dappsへ接続する処理を記述
+    final connector = WalletConnect(
+      uri: url,
+      clientMeta: const PeerMeta(
+        name: 'NFT Fi',
+        description: 'NFT Fi Wallet App',
+        url: '',
+        icons: [''],
+      ),
+    );
+
+    connector.on('connect', (SessionStatus session) {
+      print("Connected.");
+      print("Address : ${session.accounts}");
+      print("ChainId : ${session.chainId}");
+    });
+
+    connector.on('session_request', (payload) async {
+      print(payload);
+      final borrowerAddress = state.loginAddress;
+      final address = await _getContractWalletAddress(borrowerAddress);
+      await connector.approveSession(
+          chainId: 5, accounts: [address]);
+    });
+
+    connector.on('session_update', (payload) async {
+      print('session_update');
+      print(payload);
+    });
+
+    connector.on('personal_sign', (payload) async {
+      print('personal_sign');
+      print(payload);
+      try {
+        final a = payload as JsonRpcRequest;
+        print(a.toJson());
+        // {id: 1667733237761071, jsonrpc: 2.0, method: personal_sign, params: [0x57656c636f6d6520746f204f70656e536561210a0a436c69636b20746f207369676e20696e20616e642061636365707420746865204f70656e536561205465726d73206f6620536572766963653a2068747470733a2f2f6f70656e7365612e696f2f746f730a0a5468697320726571756573742077696c6c206e6f742074726967676572206120626c6f636b636861696e207472616e73616374696f6e206f7220636f737420616e792067617320666565732e0a0a596f75722061757468656e7469636174696f6e207374617475732077696c6c20726573657420616674657220323420686f7572732e0a0a57616c6c657420616464726573733a0a3078663035353063346531323166313865336438313831333731626530313131373864326565613464660a0a4e6f6e63653a0a35393634313339342d646531362d343863632d393333392d383836346635313562326335, 0xf0550c4e121f18e3d8181371be011178d2eea4df]}
+      }catch (ex) {
+        print(ex);
+      }
+    });
+
+    connector.on('wallet_switch_ethereum_chain', (payload) async {
+      print('wallet_switch_ethereum_chain');
+      print(payload);
+    });
+
+    connector.on('switch_ethereum_chain', (payload) async {
+      print('switch_ethereum_chain');
+      print(payload);
+    });
+
+    connector.on('disconnect', (session) {
+      print("Disconnected. $session");
+    });
     return true;
+  }
+
+  Future<String> _getContractWalletAddress(String borrowerAddress) async {
+    final web3provider = Web3Provider(ethereum!);
+    const leaseContractAddress = AppConst.leaseServiceContractAddress;
+    final contract = Contract(
+      leaseContractAddress,
+      Interface(leaseServiceAbi),
+      web3provider,
+    );
+    try {
+      return await contract.call<String>(
+        'leaseVaultOf',
+        [
+          borrowerAddress,
+        ],
+      );
+    } catch (ex) {
+      print(borrowerAddress);
+      print("failed. ${ex.toString()}");
+      return "";
+    }
   }
 }
