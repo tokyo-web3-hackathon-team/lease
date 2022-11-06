@@ -216,6 +216,6 @@ contract LeaseService is ILeaseService, Ownable, ReentrancyGuard {
             offer.tokenId == tokenId &&
             offer.price == price &&
             offer.until == until &&
-            offer.until <= block.number);
+            offer.until >= block.number);
     }
 }
