@@ -1,0 +1,4 @@
+enum LeaseType {
+  borrow,
+  lend,
+}

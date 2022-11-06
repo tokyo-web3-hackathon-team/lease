@@ -60,6 +60,8 @@ ProjectXはそうした課題を解決します。
 
 [LeaseService (Etherscan)](https://goerli.etherscan.io/address/0x61739f5ee253a554FeC6c727611c17DD9A24a3f7)
 
+[LeaseVault (Etherscan)](https://goerli.etherscan.io/address/0xF0550c4e121f18E3d8181371BE011178D2eeA4dF)
+
 [ドキュメント_gas代の試算](./docs/contract.md)
 
 [実装_インターフェース](./contract-dev-env/contracts/ILeaseService.sol)

@@ -4,8 +4,9 @@ part 'offer_state.freezed.dart';
 
 @freezed
 abstract class OffersState with _$OffersState {
-  const factory OffersState({@Default([]) List<OfferState> offers}) =
-      _OffersState;
+  const factory OffersState(
+      {OfferState? currentOffer,
+      @Default([]) List<OfferState> offers}) = _OffersState;
 }
 
 @freezed
@@ -16,6 +17,7 @@ abstract class OfferState with _$OfferState {
     @Default("") String imageUrl,
     @Default("") String lenderAddress,
     int? rentalPeriod,
+    DateTime? dueDate,
     int? rentalPrice,
   }) = _OfferState;
 }

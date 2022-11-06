@@ -7,13 +7,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:nft_lending_page/constants.dart';
 import 'package:nft_lending_page/data/abis.dart';
-import 'package:nft_lending_page/models/offer.dart';
 import 'package:nft_lending_page/models/offer/offer_state.dart';
 
 class OfferController extends StateNotifier<OffersState> {
   OfferController() : super(const OffersState());
 
-  Future<List<Offer>> getOffers() async {
+  setCurrentOffer(OfferState currentOffer) {
+    state = state.copyWith(currentOffer: currentOffer);
+  }
+
+  Future<void> getOffers() async {
     final web3provider = Web3Provider(ethereum!);
     const leaseContractAddress = AppConst.leaseServiceContractAddress;
     final contract = Contract(
@@ -23,7 +26,9 @@ class OfferController extends StateNotifier<OffersState> {
     );
     final filter = contract.getFilter('Offer');
     final events = await contract.queryFilter(filter);
-    final offers = <Offer>[];
+    // TODO 貸し出し済みのeventを検知して差し引きする -> スマコン側に確認しにいく
+    // "event Offer(address collection, uint256 tokenId, uint256 price, uint until)"
+    final List<OfferState> offers = [];
     for (int i = 0; i < events.length; i++) {
       // "event Offer(address lender, address collection, uint256 tokenId, uint256 price, uint until)"
       var lenderAddress = events[i].args[0].toString();
@@ -48,16 +53,18 @@ class OfferController extends StateNotifier<OffersState> {
       _response(response);
       var responseJson = json.decode(response.body);
       final imageUrl = responseJson["metadata"]["image"];
-      final offer = Offer(
+      final offer = OfferState(
           assetAddress: contractAddress,
           tokenId: tokenId,
           imageUrl: imageUrl,
           lenderAddress: lenderAddress,
           rentalPeriod: rentalPeriod,
+          dueDate: await _convertBlockNumberToDueDate(rentalPeriod),
           rentalPrice: rentalPrice);
       offers.add(offer);
     }
-    return offers;
+
+    state = state.copyWith(offers: offers);
   }
 
   Future<bool> _isActiveOffer(String lender, String collection, int tokenId,
@@ -96,5 +103,76 @@ class OfferController extends StateNotifier<OffersState> {
       default:
         throw Exception('unexpected error. status code $statusCode');
     }
+  }
+
+  Future<bool> offerToLend(String nftContractAddress, String tokenId,
+      DateTime dueDate, double rentalFee) async {
+    final leaseContract = Contract(
+      AppConst.leaseServiceContractAddress,
+      Interface(leaseServiceAbi),
+      provider!.getSigner(),
+    );
+
+    int toBlockNumber = await _convertDueDateToBlockNumber(dueDate);
+    BigInt rentalFeeWei = EthUtils.parseEther(rentalFee.toString()).toBigInt;
+    try {
+      TransactionResponse tx = await leaseContract.send(
+        'offerLending',
+        [nftContractAddress, tokenId, rentalFeeWei, toBlockNumber],
+      );
+      print(
+          "TxHash: ${tx.hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,"
+          " Rental Fee : $rentalFeeWei, Until : $toBlockNumber");
+    } catch (ex) {
+      print("Fail to offer. ${ex.toString()}");
+      return false;
+    }
+    return true;
+  }
+
+  Future<bool> borrow(
+      String nftContractAddress, String tokenId, DateTime dueDate) async {
+    final leaseContract = Contract(
+      AppConst.leaseServiceContractAddress,
+      Interface(leaseServiceAbi),
+      provider!.getSigner(),
+    );
+
+    int toBlockNumber = await _convertDueDateToBlockNumber(dueDate);
+    BigInt returnFeeWei = EthUtils.parseEther("0.005").toBigInt;
+    try {
+      TransactionResponse tx = await leaseContract.send(
+        'borrow',
+        [nftContractAddress, tokenId, toBlockNumber],
+        TransactionOverride(value: returnFeeWei),
+      );
+      print(
+          "TxHash: ${tx.hash}, Contract Address : $nftContractAddress, Token ID : $tokenId,"
+          " Until : $toBlockNumber");
+    } catch (ex) {
+      print("Fail to offer. ${ex.toString()}");
+      return false;
+    }
+    return true;
+  }
+
+  Future<int> _convertDueDateToBlockNumber(DateTime dueDate) async {
+    DateTime now = DateTime.now();
+    DateTime fromDate = DateTime(now.year, now.month, now.day, 0, 0, 0, 0);
+    DateTime toDate =
+        DateTime(dueDate.year, dueDate.month, dueDate.day, 0, 0, 0, 0);
+    int diffBlocks = dueDate.difference(fromDate).inSeconds ~/ 15;
+    int fromBlockNumber = await provider!.getBlockNumber();
+    return fromBlockNumber + diffBlocks;
+  }
+
+  Future<DateTime> _convertBlockNumberToDueDate(int toBlockNumber) async {
+    int fromBlockNumber = await provider!.getBlockNumber();
+    int diffDays = toBlockNumber - fromBlockNumber ~/ 15;
+
+    DateTime now = DateTime.now();
+    DateTime dueDate =
+        DateTime(now.year, now.month, now.day + diffDays, 0, 0, 0, 0);
+    return dueDate;
   }
 }

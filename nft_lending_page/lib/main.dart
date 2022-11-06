@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:nft_lending_page/pages/borrow_page.dart';
 import 'package:nft_lending_page/pages/lend_page.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -38,7 +39,8 @@ class NftLendingApp extends HookWidget {
       initialRoute: Routes.homePage,
       routes: {
         Routes.homePage: (context) => HomePage(),
-        Routes.lendPage: (context) => LendPage()
+        Routes.lendPage: (context) => LendPage(),
+        Routes.borrowPage: (context) => BorrowPage(),
       },
     );
   }

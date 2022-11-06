@@ -8,10 +8,9 @@ import 'package:nft_lending_page/components/primary_button.dart';
 import 'package:nft_lending_page/components/customized_text_form_field.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/providers.dart';
-import 'package:nft_lending_page/constants.dart';
 
-class LendPage extends HookConsumerWidget {
-  LendPage({super.key});
+class BorrowPage extends HookConsumerWidget {
+  BorrowPage({super.key});
 
   final textEditingController = TextEditingController();
   final returnFee = 0.05;
@@ -54,24 +53,11 @@ class LendPage extends HookConsumerWidget {
         minute,
         second));
     final rentalFee = useState(0.00);
-    final isApproved = useState(false);
 
     useEffect(() {
       textEditingController.text =
           DateFormat('yyyy-MM-dd').format(defaultRentalPeriod);
     }, []);
-    useEffect(() {
-      if (!ref.read(walletProvider.notifier).isLogin() || contractAddress.value == "" || tokenId.value == "") {
-        print("Cannot get approved address: not initialized");
-        return;
-      }
-      ref.read(walletProvider.notifier)
-        .getApproved(contractAddress.value, tokenId.value)
-        .then((String approved) {
-          isApproved.value = approved == AppConst.leaseServiceContractAddress;
-          print("approved address ${approved}");
-        });
-    }, [contractAddress.value, tokenId.value]);
 
     return Scaffold(
       body: Center(
@@ -80,11 +66,17 @@ class LendPage extends HookConsumerWidget {
             const app.AppBar(),
             const SizedBox(height: 100),
             CustomizedTextFormField(
+              initialValue:
+                  ref.watch(offerProvider).currentOffer?.assetAddress ?? "",
+              enabled: false,
               hintText: 'NFT Contract Address (0x38ai...dkjk)',
               onChanged: (e) => contractAddress.value = e,
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
+              initialValue:
+                  ref.watch(offerProvider).currentOffer?.tokenId.toString(),
+              enabled: false,
               hintText: 'Token ID',
               onChanged: (e) => tokenId.value = e,
             ),
@@ -99,6 +91,9 @@ class LendPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
+              initialValue:
+                  ref.watch(offerProvider).currentOffer?.rentalPrice.toString(),
+              enabled: false,
               inputFormats: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
               ],
@@ -107,9 +102,9 @@ class LendPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
+              initialValue: returnFee.toString(),
               enabled: false,
               hintText: 'Return Fee [ETH] (Borrower pay for tx of return.)',
-              initialValue: returnFee.toString(),
             ),
             const SizedBox(height: 20),
             Row(
@@ -122,39 +117,12 @@ class LendPage extends HookConsumerWidget {
                   },
                 ),
                 const SizedBox(width: 10),
-                PrimaryButton("Approve", onPressed: !isApproved.value ? () {
-                  if (ref.read(walletProvider.notifier).isLogin()) {
-                    ref
-                      .read(walletProvider.notifier)
-                      .approve(contractAddress.value, tokenId.value)
-                      .then((bool result) {
-                        if (result) {
-                          isApproved.value = result;
-                        } else {
-                          showDialog<void>(
-                            context: context,
-                            builder: (_) {
-                              return const FailToLendDialogForTx();
-                            });
-                        }
-                      });
-                  } else {
-                    showDialog<void>(
-                        context: context,
-                        builder: (_) {
-                          return const FailToLendDialogForLogin();
-                        }).then((value) {
-                      ref.read(walletProvider.notifier).login();
-                    });
-                  }
-                } : null),
-                const SizedBox(width: 10),
-                PrimaryButton("Lend", onPressed: isApproved.value ? () {
+                PrimaryButton("Borrow", onPressed: () {
                   if (ref.read(walletProvider.notifier).isLogin()) {
                     ref
                         .read(offerProvider.notifier)
-                        .offerToLend(contractAddress.value, tokenId.value,
-                            rentalPeriod.value, rentalFee.value)
+                        .borrow(contractAddress.value, tokenId.value,
+                            rentalPeriod.value)
                         .then((bool result) {
                       if (result) {
                         ref.read(menuProvider.notifier).setCurrentIndex(1);
@@ -177,7 +145,7 @@ class LendPage extends HookConsumerWidget {
                       ref.read(walletProvider.notifier).login();
                     });
                   }
-                } : null),
+                }),
               ],
             )
           ],
@@ -193,7 +161,7 @@ class FailToLendDialogForLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Fail to lend !!'),
+      title: const Text('Fail to borrow !!'),
       content: const Text('Please connect to wallet before lend.'),
       actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[
@@ -212,7 +180,7 @@ class FailToLendDialogForTx extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Fail to lend !!'),
+      title: const Text('Fail to borrow !!'),
       content: const Text('Please confirm parameters and try again.'),
       actionsAlignment: MainAxisAlignment.center,
       actions: <Widget>[

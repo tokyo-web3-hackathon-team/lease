@@ -29,16 +29,13 @@ class AppBarMenu extends HookConsumerWidget {
           title: 'MyPage',
           iconUrl: 'assets/icon/statistic.svg',
           onPress: () {
-            ref.read(menuProvider.notifier).setCurrentIndex(1);
-          },
-        ),
-        MenuItem(
-          currentIndex: currentIndex,
-          itemIndex: 2,
-          title: 'Settings',
-          iconUrl: 'assets/icon/settings2.svg',
-          onPress: () {
-            ref.read(menuProvider.notifier).setCurrentIndex(2);
+            if (ref.read(walletProvider.notifier).isLogin()) {
+              ref.read(menuProvider.notifier).setCurrentIndex(1);
+            } else {
+              ref.read(walletProvider.notifier).login().then((bool result) {
+                ref.read(menuProvider.notifier).setCurrentIndex(1);
+              });
+            }
           },
         ),
       ],

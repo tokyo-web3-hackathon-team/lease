@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$OffersState {
+  OfferState? get currentOffer => throw _privateConstructorUsedError;
   List<OfferState> get offers => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -29,7 +30,9 @@ abstract class $OffersStateCopyWith<$Res> {
           OffersState value, $Res Function(OffersState) then) =
       _$OffersStateCopyWithImpl<$Res, OffersState>;
   @useResult
-  $Res call({List<OfferState> offers});
+  $Res call({OfferState? currentOffer, List<OfferState> offers});
+
+  $OfferStateCopyWith<$Res>? get currentOffer;
 }
 
 /// @nodoc
@@ -45,14 +48,31 @@ class _$OffersStateCopyWithImpl<$Res, $Val extends OffersState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? currentOffer = freezed,
     Object? offers = null,
   }) {
     return _then(_value.copyWith(
+      currentOffer: freezed == currentOffer
+          ? _value.currentOffer
+          : currentOffer // ignore: cast_nullable_to_non_nullable
+              as OfferState?,
       offers: null == offers
           ? _value.offers
           : offers // ignore: cast_nullable_to_non_nullable
               as List<OfferState>,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $OfferStateCopyWith<$Res>? get currentOffer {
+    if (_value.currentOffer == null) {
+      return null;
+    }
+
+    return $OfferStateCopyWith<$Res>(_value.currentOffer!, (value) {
+      return _then(_value.copyWith(currentOffer: value) as $Val);
+    });
   }
 }
 
@@ -64,7 +84,10 @@ abstract class _$$_OffersStateCopyWith<$Res>
       __$$_OffersStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<OfferState> offers});
+  $Res call({OfferState? currentOffer, List<OfferState> offers});
+
+  @override
+  $OfferStateCopyWith<$Res>? get currentOffer;
 }
 
 /// @nodoc
@@ -78,9 +101,14 @@ class __$$_OffersStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? currentOffer = freezed,
     Object? offers = null,
   }) {
     return _then(_$_OffersState(
+      currentOffer: freezed == currentOffer
+          ? _value.currentOffer
+          : currentOffer // ignore: cast_nullable_to_non_nullable
+              as OfferState?,
       offers: null == offers
           ? _value._offers
           : offers // ignore: cast_nullable_to_non_nullable
@@ -92,9 +120,12 @@ class __$$_OffersStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_OffersState implements _OffersState {
-  const _$_OffersState({final List<OfferState> offers = const []})
+  const _$_OffersState(
+      {this.currentOffer, final List<OfferState> offers = const []})
       : _offers = offers;
 
+  @override
+  final OfferState? currentOffer;
   final List<OfferState> _offers;
   @override
   @JsonKey()
@@ -105,7 +136,7 @@ class _$_OffersState implements _OffersState {
 
   @override
   String toString() {
-    return 'OffersState(offers: $offers)';
+    return 'OffersState(currentOffer: $currentOffer, offers: $offers)';
   }
 
   @override
@@ -113,12 +144,14 @@ class _$_OffersState implements _OffersState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_OffersState &&
+            (identical(other.currentOffer, currentOffer) ||
+                other.currentOffer == currentOffer) &&
             const DeepCollectionEquality().equals(other._offers, _offers));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_offers));
+  int get hashCode => Object.hash(
+      runtimeType, currentOffer, const DeepCollectionEquality().hash(_offers));
 
   @JsonKey(ignore: true)
   @override
@@ -128,8 +161,12 @@ class _$_OffersState implements _OffersState {
 }
 
 abstract class _OffersState implements OffersState {
-  const factory _OffersState({final List<OfferState> offers}) = _$_OffersState;
+  const factory _OffersState(
+      {final OfferState? currentOffer,
+      final List<OfferState> offers}) = _$_OffersState;
 
+  @override
+  OfferState? get currentOffer;
   @override
   List<OfferState> get offers;
   @override
@@ -145,6 +182,7 @@ mixin _$OfferState {
   String get imageUrl => throw _privateConstructorUsedError;
   String get lenderAddress => throw _privateConstructorUsedError;
   int? get rentalPeriod => throw _privateConstructorUsedError;
+  DateTime? get dueDate => throw _privateConstructorUsedError;
   int? get rentalPrice => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -164,6 +202,7 @@ abstract class $OfferStateCopyWith<$Res> {
       String imageUrl,
       String lenderAddress,
       int? rentalPeriod,
+      DateTime? dueDate,
       int? rentalPrice});
 }
 
@@ -185,6 +224,7 @@ class _$OfferStateCopyWithImpl<$Res, $Val extends OfferState>
     Object? imageUrl = null,
     Object? lenderAddress = null,
     Object? rentalPeriod = freezed,
+    Object? dueDate = freezed,
     Object? rentalPrice = freezed,
   }) {
     return _then(_value.copyWith(
@@ -208,6 +248,10 @@ class _$OfferStateCopyWithImpl<$Res, $Val extends OfferState>
           ? _value.rentalPeriod
           : rentalPeriod // ignore: cast_nullable_to_non_nullable
               as int?,
+      dueDate: freezed == dueDate
+          ? _value.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       rentalPrice: freezed == rentalPrice
           ? _value.rentalPrice
           : rentalPrice // ignore: cast_nullable_to_non_nullable
@@ -230,6 +274,7 @@ abstract class _$$_OfferStateCopyWith<$Res>
       String imageUrl,
       String lenderAddress,
       int? rentalPeriod,
+      DateTime? dueDate,
       int? rentalPrice});
 }
 
@@ -249,6 +294,7 @@ class __$$_OfferStateCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? lenderAddress = null,
     Object? rentalPeriod = freezed,
+    Object? dueDate = freezed,
     Object? rentalPrice = freezed,
   }) {
     return _then(_$_OfferState(
@@ -272,6 +318,10 @@ class __$$_OfferStateCopyWithImpl<$Res>
           ? _value.rentalPeriod
           : rentalPeriod // ignore: cast_nullable_to_non_nullable
               as int?,
+      dueDate: freezed == dueDate
+          ? _value.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       rentalPrice: freezed == rentalPrice
           ? _value.rentalPrice
           : rentalPrice // ignore: cast_nullable_to_non_nullable
@@ -289,6 +339,7 @@ class _$_OfferState implements _OfferState {
       this.imageUrl = "",
       this.lenderAddress = "",
       this.rentalPeriod,
+      this.dueDate,
       this.rentalPrice});
 
   @override
@@ -305,11 +356,13 @@ class _$_OfferState implements _OfferState {
   @override
   final int? rentalPeriod;
   @override
+  final DateTime? dueDate;
+  @override
   final int? rentalPrice;
 
   @override
   String toString() {
-    return 'OfferState(assetAddress: $assetAddress, tokenId: $tokenId, imageUrl: $imageUrl, lenderAddress: $lenderAddress, rentalPeriod: $rentalPeriod, rentalPrice: $rentalPrice)';
+    return 'OfferState(assetAddress: $assetAddress, tokenId: $tokenId, imageUrl: $imageUrl, lenderAddress: $lenderAddress, rentalPeriod: $rentalPeriod, dueDate: $dueDate, rentalPrice: $rentalPrice)';
   }
 
   @override
@@ -326,13 +379,14 @@ class _$_OfferState implements _OfferState {
                 other.lenderAddress == lenderAddress) &&
             (identical(other.rentalPeriod, rentalPeriod) ||
                 other.rentalPeriod == rentalPeriod) &&
+            (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
             (identical(other.rentalPrice, rentalPrice) ||
                 other.rentalPrice == rentalPrice));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, assetAddress, tokenId, imageUrl,
-      lenderAddress, rentalPeriod, rentalPrice);
+      lenderAddress, rentalPeriod, dueDate, rentalPrice);
 
   @JsonKey(ignore: true)
   @override
@@ -348,6 +402,7 @@ abstract class _OfferState implements OfferState {
       final String imageUrl,
       final String lenderAddress,
       final int? rentalPeriod,
+      final DateTime? dueDate,
       final int? rentalPrice}) = _$_OfferState;
 
   @override
@@ -360,6 +415,8 @@ abstract class _OfferState implements OfferState {
   String get lenderAddress;
   @override
   int? get rentalPeriod;
+  @override
+  DateTime? get dueDate;
   @override
   int? get rentalPrice;
   @override
