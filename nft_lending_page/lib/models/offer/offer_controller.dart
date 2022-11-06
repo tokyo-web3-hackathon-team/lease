@@ -169,24 +169,24 @@ class OfferController extends StateNotifier<OffersState> {
   }
 
   Future<bool> borrow(
-      String nftContractAddress, String tokenId, DateTime dueDate) async {
+      String nftContractAddress, String tokenId, DateTime dueDate, BigInt price) async {
     final leaseContract = Contract(
       AppConst.leaseServiceContractAddress,
       Interface(leaseServiceAbi),
       provider!.getSigner(),
     );
 
-    int toBlockNumber = await _convertDueDateToBlockNumber(dueDate);
-    BigInt returnFeeWei = EthUtils.parseEther("0.005").toBigInt;
+    int periodBlockNumber = await _convertDueDateToBlockNumber(dueDate) - await provider!.getBlockNumber();
+    BigInt payment = EthUtils.parseEther("0.005").toBigInt + price * BigInt.from(periodBlockNumber);
     try {
       TransactionResponse tx = await leaseContract.send(
         'borrow',
-        [nftContractAddress, tokenId, toBlockNumber],
-        TransactionOverride(value: returnFeeWei),
+        [nftContractAddress, tokenId, periodBlockNumber],
+        TransactionOverride(value: payment),
       );
       print(
           "TxHash: ${tx.hash}, Contract Address : $nftContractAddress, Token ID : $tokenId,"
-          " Until : $toBlockNumber");
+          " Period : $periodBlockNumber");
     } catch (ex) {
       print("Fail to offer. ${ex.toString()}");
       return false;

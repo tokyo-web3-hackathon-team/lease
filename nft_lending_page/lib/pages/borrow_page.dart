@@ -43,8 +43,8 @@ class BorrowPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final contractAddress = useState("");
-    final tokenId = useState("");
+    final contractAddress = useState(ref.watch(offerProvider).currentOffer?.assetAddress ?? "");
+    final tokenId = useState(ref.watch(offerProvider).currentOffer?.tokenId.toString() ?? "");
     final rentalPeriod = useState(DateTime(
         defaultRentalPeriod.year,
         defaultRentalPeriod.month,
@@ -52,7 +52,7 @@ class BorrowPage extends HookConsumerWidget {
         hour,
         minute,
         second));
-    final rentalFee = useState(0.00);
+    final rentalFee = useState(BigInt.from(ref.watch(offerProvider).currentOffer?.rentalPrice ?? 0));
 
     useEffect(() {
       textEditingController.text =
@@ -66,16 +66,14 @@ class BorrowPage extends HookConsumerWidget {
             const app.AppBar(),
             const SizedBox(height: 100),
             CustomizedTextFormField(
-              initialValue:
-                  ref.watch(offerProvider).currentOffer?.assetAddress ?? "",
+              initialValue: contractAddress.value,
               enabled: false,
               hintText: 'NFT Contract Address (0x38ai...dkjk)',
               onChanged: (e) => contractAddress.value = e,
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
-              initialValue:
-                  ref.watch(offerProvider).currentOffer?.tokenId.toString(),
+              initialValue: tokenId.value,
               enabled: false,
               hintText: 'Token ID',
               onChanged: (e) => tokenId.value = e,
@@ -91,14 +89,13 @@ class BorrowPage extends HookConsumerWidget {
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
-              initialValue:
-                  ref.watch(offerProvider).currentOffer?.rentalPrice.toString(),
+              initialValue: rentalFee.value.toString(),
               enabled: false,
               inputFormats: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
               ],
               hintText: 'Rental Fee [ETH] (You receive from borrower.)',
-              onChanged: (e) => rentalFee.value = double.parse(e),
+              onChanged: (e) => rentalFee.value = BigInt.parse(e),
             ),
             const SizedBox(height: 20),
             CustomizedTextFormField(
@@ -122,7 +119,7 @@ class BorrowPage extends HookConsumerWidget {
                     ref
                         .read(offerProvider.notifier)
                         .borrow(contractAddress.value, tokenId.value,
-                            rentalPeriod.value)
+                            rentalPeriod.value, rentalFee.value)
                         .then((bool result) {
                       if (result) {
                         ref.read(menuProvider.notifier).setCurrentIndex(1);
