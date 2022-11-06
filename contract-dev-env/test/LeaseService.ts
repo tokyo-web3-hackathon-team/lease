@@ -63,14 +63,14 @@ describe("LeaseService", function () {
       it("asset is offered", async function () {
         const { asset, leaseService, lender } = await loadFixture(deployAsset);
         await expect(leaseService.connect(lender).offerLending(asset.address, TOKEN_ID, PRICE, PERIOD))
-          .to.emit(leaseService, "Offer").withArgs(asset.address, TOKEN_ID, PRICE, PERIOD);
+          .to.emit(leaseService, "Offer").withArgs(lender.address, asset.address, TOKEN_ID, PRICE, PERIOD);
       });
       it("offer can be overwritten", async function () {
         const { asset, leaseService, lender } = await loadFixture(deployAsset);
         await expect(leaseService.connect(lender).offerLending(asset.address, TOKEN_ID, PRICE, PERIOD))
-          .to.emit(leaseService, "Offer").withArgs(asset.address, TOKEN_ID, PRICE, PERIOD);
+          .to.emit(leaseService, "Offer").withArgs(lender.address, asset.address, TOKEN_ID, PRICE, PERIOD);
         await expect(leaseService.connect(lender).offerLending(asset.address, TOKEN_ID, PRICE * 2, PERIOD))
-          .to.emit(leaseService, "Offer").withArgs(asset.address, TOKEN_ID, PRICE * 2, PERIOD);
+          .to.emit(leaseService, "Offer").withArgs(lender.address, asset.address, TOKEN_ID, PRICE * 2, PERIOD);
       });
     });
   });
@@ -217,9 +217,6 @@ describe("LeaseService", function () {
         expect(await asset.ownerOf(TOKEN_ID)).to.equals(lender.address);
       });
     });
-  });
-
-  describe("withdraw", function () {
   });
 
   describe("leaseServiceOf", function () {
