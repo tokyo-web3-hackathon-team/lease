@@ -9,7 +9,7 @@ class AppBarLogo extends StatelessWidget {
       height: double.infinity,
       width: 70,
       child: Image.asset(
-        'assets/logo/instagram_logo_with_name.png',
+        '',
       ),
     );
   }
