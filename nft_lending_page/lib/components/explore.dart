@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:nft_lending_page/pages/dummy_nft.dart';
+import 'package:nft_lending_page/data/dummy_nft.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
 
 import '../constants.dart';
-import 'nft.dart';
+import '../models/nft.dart';
 
-class ExplorePage extends StatelessWidget {
-  const ExplorePage({Key? key}) : super(key: key);
+class Explore extends StatelessWidget {
+  const Explore({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

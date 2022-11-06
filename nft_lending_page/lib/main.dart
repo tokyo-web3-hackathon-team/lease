@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'home_page.dart';
+import 'constants.dart';
+import 'pages/home_page.dart';
 
 void main() {
-  runApp(const ProviderScope(child: NftLendingApp()));
+  runApp(
+    const ProviderScope(
+      child: NftLendingApp(),
+    ),
+  );
 }
 
-class NftLendingApp extends StatelessWidget {
+class NftLendingApp extends HookWidget {
   const NftLendingApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      darkTheme: ThemeData.dark(),
-      home: HomePage(title: 'NFT LENDING'),
+      title: 'NFT Rental',
+      theme: ThemeData(
+        fontFamily: 'Sofia Pro',
+        scaffoldBackgroundColor: AppConst.colorGrey,
+        primarySwatch: Colors.red,
+        textTheme: const TextTheme(
+          bodyText2: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      home: HomePage(),
     );
   }
 }

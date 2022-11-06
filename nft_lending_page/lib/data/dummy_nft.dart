@@ -1,4 +1,4 @@
-import 'nft.dart';
+import '../models/nft.dart';
 
 List<NFT> dummyNFT = [
   NFT(

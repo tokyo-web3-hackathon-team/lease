@@ -7,6 +7,7 @@ import 'package:nft_lending_page/lending_repository.dart';
 
 class LendPage extends HookConsumerWidget {
   LendPage({super.key});
+
   final textEditingController = TextEditingController();
   final returnFee = 0.01;
   final defaultRentalPeriod = DateTime.now().add(const Duration(days: 1));

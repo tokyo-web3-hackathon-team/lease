@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AppBarTopLogo extends StatelessWidget {
-  const AppBarTopLogo({Key? key}) : super(key: key);
+class AppBarLogo extends StatelessWidget {
+  const AppBarLogo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
