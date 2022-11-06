@@ -10,7 +10,7 @@ import 'constants.dart';
 import 'pages/home_page.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: "env/.env");
+  // await dotenv.load(fileName: "env/.env");
   runApp(
     const ProviderScope(
       child: NftLendingApp(),

@@ -41,7 +41,7 @@ class OfferController extends StateNotifier<OffersState> {
         continue;
       }
       final url = Uri.https(AppConst.alchemyApiDomain,
-          "nft/v2/${dotenv.env["ALCHEMY_API_KEY"]!}/getNFTMetadata", {
+          "nft/v2/VDzuc6T_BZtAlBf0MnsFZrt-OABQ7E3A/getNFTMetadata", {
         "contractAddress": contractAddress,
         "tokenId": tokenId.toString(),
         "refreshCache": false.toString()
