@@ -9,6 +9,95 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsDummyGen {
+  const $AssetsDummyGen();
+
+  /// File path: assets/dummy/post1.jpg
+  AssetGenImage get post1 => const AssetGenImage('assets/dummy/post1.jpg');
+
+  /// File path: assets/dummy/post10.jpg
+  AssetGenImage get post10 => const AssetGenImage('assets/dummy/post10.jpg');
+
+  /// File path: assets/dummy/post2.jpg
+  AssetGenImage get post2 => const AssetGenImage('assets/dummy/post2.jpg');
+
+  /// File path: assets/dummy/post3.jpg
+  AssetGenImage get post3 => const AssetGenImage('assets/dummy/post3.jpg');
+
+  /// File path: assets/dummy/post4.jpg
+  AssetGenImage get post4 => const AssetGenImage('assets/dummy/post4.jpg');
+
+  /// File path: assets/dummy/post5.jpg
+  AssetGenImage get post5 => const AssetGenImage('assets/dummy/post5.jpg');
+
+  /// File path: assets/dummy/post6.jpg
+  AssetGenImage get post6 => const AssetGenImage('assets/dummy/post6.jpg');
+
+  /// File path: assets/dummy/post7.jpg
+  AssetGenImage get post7 => const AssetGenImage('assets/dummy/post7.jpg');
+
+  /// File path: assets/dummy/post8.jpg
+  AssetGenImage get post8 => const AssetGenImage('assets/dummy/post8.jpg');
+
+  /// File path: assets/dummy/post9.jpg
+  AssetGenImage get post9 => const AssetGenImage('assets/dummy/post9.jpg');
+
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [post1, post10, post2, post3, post4, post5, post6, post7, post8, post9];
+}
+
+class $AssetsIconGen {
+  const $AssetsIconGen();
+
+  /// File path: assets/icon/direct_message.svg
+  String get directMessage => 'assets/icon/direct_message.svg';
+
+  /// File path: assets/icon/grid.svg
+  String get grid => 'assets/icon/grid.svg';
+
+  /// File path: assets/icon/igtv.svg
+  String get igtv => 'assets/icon/igtv.svg';
+
+  /// File path: assets/icon/logout.svg
+  String get logout => 'assets/icon/logout.svg';
+
+  /// File path: assets/icon/notification_bell.svg
+  String get notificationBell => 'assets/icon/notification_bell.svg';
+
+  /// File path: assets/icon/search.svg
+  String get search => 'assets/icon/search.svg';
+
+  /// File path: assets/icon/settings2.svg
+  String get settings2 => 'assets/icon/settings2.svg';
+
+  /// File path: assets/icon/statistic.svg
+  String get statistic => 'assets/icon/statistic.svg';
+
+  /// List of all assets
+  List<String> get values => [
+        directMessage,
+        grid,
+        igtv,
+        logout,
+        notificationBell,
+        search,
+        settings2,
+        statistic
+      ];
+}
+
+class $AssetsLogoGen {
+  const $AssetsLogoGen();
+
+  /// File path: assets/logo/instagram_logo_with_name.png
+  AssetGenImage get instagramLogoWithName =>
+      const AssetGenImage('assets/logo/instagram_logo_with_name.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [instagramLogoWithName];
+}
+
 class $AssetsNftGen {
   const $AssetsNftGen();
 
@@ -37,6 +126,9 @@ class $AssetsNftGen {
 class Assets {
   Assets._();
 
+  static const $AssetsDummyGen dummy = $AssetsDummyGen();
+  static const $AssetsIconGen icon = $AssetsIconGen();
+  static const $AssetsLogoGen logo = $AssetsLogoGen();
   static const $AssetsNftGen nft = $AssetsNftGen();
 }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
-import 'package:nft_lending_page/components/explore.dart';
 import 'package:nft_lending_page/components/primary_button.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
@@ -34,8 +33,8 @@ class ExplorePage extends HookConsumerWidget {
         Expanded(
           child: CustomScrollView(
             controller: homeScrollController,
-            slivers: const [
-              Explore(),
+            slivers: [
+              _buildLendingList(context),
             ],
           ),
         ),
@@ -85,42 +84,69 @@ class FeedCard extends StatelessWidget {
     return Column(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           child: Image.asset(
             nft.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
-        const SizedBox(height: AppConst.padding),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppConst.padding),
-          child: Row(
-            children: [
-              const SizedBox(width: AppConst.padding),
-              Text(nft.userAddress),
-              const Spacer(),
-              Row(
+        FractionallySizedBox(
+          widthFactor: 1,
+          child: Container(
+            width: 100,
+            height: 160,
+            decoration: const BoxDecoration(
+              color: AppConst.colorGreyDark,
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
                 children: [
-                  const Icon(
-                    Icons.favorite_border,
-                    color: Colors.white54,
-                  ),
-                  const SizedBox(width: AppConst.padding / 2),
-                  Text(nft.likes.toString()),
-                  const SizedBox(width: AppConst.padding),
-                  const Icon(
-                    Icons.chat_bubble_outline_rounded,
-                    color: Colors.white54,
-                  ),
-                  const SizedBox(width: AppConst.padding / 2),
-                  Text(nft.comments.toString()),
+                  const RentalCondition(
+                      title: "rental period", value: "2022/11/16"),
+                  const RentalCondition(
+                      title: "rental fee", value: "0.1 ETH / day"),
+                  const RentalCondition(title: "return fee", value: "0.1 ETH"),
+                  const RentalCondition(
+                      title: "total fee", value: "1 ETH / 10days"),
+                  PrimaryButton("Borrow", onPressed: () {
+                    //
+                  })
                 ],
               ),
-            ],
+            ),
           ),
         ),
         const SizedBox(height: AppConst.padding),
       ],
+    );
+  }
+}
+
+class RentalCondition extends StatelessWidget {
+  const RentalCondition({
+    Key? key,
+    required this.title,
+    this.value,
+  }) : super(key: key);
+  final String title;
+  final dynamic value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title),
+          Text(value),
+        ],
+      ),
     );
   }
 }
