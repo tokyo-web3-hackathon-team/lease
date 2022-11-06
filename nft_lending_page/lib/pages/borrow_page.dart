@@ -120,7 +120,7 @@ class BorrowPage extends HookConsumerWidget {
                 PrimaryButton("Borrow", onPressed: () {
                   if (ref.read(walletProvider.notifier).isLogin()) {
                     ref
-                        .read(walletProvider.notifier)
+                        .read(offerProvider.notifier)
                         .borrow(contractAddress.value, tokenId.value,
                             rentalPeriod.value)
                         .then((bool result) {

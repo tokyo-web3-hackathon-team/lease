@@ -182,6 +182,7 @@ mixin _$OfferState {
   String get imageUrl => throw _privateConstructorUsedError;
   String get lenderAddress => throw _privateConstructorUsedError;
   int? get rentalPeriod => throw _privateConstructorUsedError;
+  DateTime? get dueDate => throw _privateConstructorUsedError;
   int? get rentalPrice => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -201,6 +202,7 @@ abstract class $OfferStateCopyWith<$Res> {
       String imageUrl,
       String lenderAddress,
       int? rentalPeriod,
+      DateTime? dueDate,
       int? rentalPrice});
 }
 
@@ -222,6 +224,7 @@ class _$OfferStateCopyWithImpl<$Res, $Val extends OfferState>
     Object? imageUrl = null,
     Object? lenderAddress = null,
     Object? rentalPeriod = freezed,
+    Object? dueDate = freezed,
     Object? rentalPrice = freezed,
   }) {
     return _then(_value.copyWith(
@@ -245,6 +248,10 @@ class _$OfferStateCopyWithImpl<$Res, $Val extends OfferState>
           ? _value.rentalPeriod
           : rentalPeriod // ignore: cast_nullable_to_non_nullable
               as int?,
+      dueDate: freezed == dueDate
+          ? _value.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       rentalPrice: freezed == rentalPrice
           ? _value.rentalPrice
           : rentalPrice // ignore: cast_nullable_to_non_nullable
@@ -267,6 +274,7 @@ abstract class _$$_OfferStateCopyWith<$Res>
       String imageUrl,
       String lenderAddress,
       int? rentalPeriod,
+      DateTime? dueDate,
       int? rentalPrice});
 }
 
@@ -286,6 +294,7 @@ class __$$_OfferStateCopyWithImpl<$Res>
     Object? imageUrl = null,
     Object? lenderAddress = null,
     Object? rentalPeriod = freezed,
+    Object? dueDate = freezed,
     Object? rentalPrice = freezed,
   }) {
     return _then(_$_OfferState(
@@ -309,6 +318,10 @@ class __$$_OfferStateCopyWithImpl<$Res>
           ? _value.rentalPeriod
           : rentalPeriod // ignore: cast_nullable_to_non_nullable
               as int?,
+      dueDate: freezed == dueDate
+          ? _value.dueDate
+          : dueDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       rentalPrice: freezed == rentalPrice
           ? _value.rentalPrice
           : rentalPrice // ignore: cast_nullable_to_non_nullable
@@ -326,6 +339,7 @@ class _$_OfferState implements _OfferState {
       this.imageUrl = "",
       this.lenderAddress = "",
       this.rentalPeriod,
+      this.dueDate,
       this.rentalPrice});
 
   @override
@@ -342,11 +356,13 @@ class _$_OfferState implements _OfferState {
   @override
   final int? rentalPeriod;
   @override
+  final DateTime? dueDate;
+  @override
   final int? rentalPrice;
 
   @override
   String toString() {
-    return 'OfferState(assetAddress: $assetAddress, tokenId: $tokenId, imageUrl: $imageUrl, lenderAddress: $lenderAddress, rentalPeriod: $rentalPeriod, rentalPrice: $rentalPrice)';
+    return 'OfferState(assetAddress: $assetAddress, tokenId: $tokenId, imageUrl: $imageUrl, lenderAddress: $lenderAddress, rentalPeriod: $rentalPeriod, dueDate: $dueDate, rentalPrice: $rentalPrice)';
   }
 
   @override
@@ -363,13 +379,14 @@ class _$_OfferState implements _OfferState {
                 other.lenderAddress == lenderAddress) &&
             (identical(other.rentalPeriod, rentalPeriod) ||
                 other.rentalPeriod == rentalPeriod) &&
+            (identical(other.dueDate, dueDate) || other.dueDate == dueDate) &&
             (identical(other.rentalPrice, rentalPrice) ||
                 other.rentalPrice == rentalPrice));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, assetAddress, tokenId, imageUrl,
-      lenderAddress, rentalPeriod, rentalPrice);
+      lenderAddress, rentalPeriod, dueDate, rentalPrice);
 
   @JsonKey(ignore: true)
   @override
@@ -385,6 +402,7 @@ abstract class _OfferState implements OfferState {
       final String imageUrl,
       final String lenderAddress,
       final int? rentalPeriod,
+      final DateTime? dueDate,
       final int? rentalPrice}) = _$_OfferState;
 
   @override
@@ -397,6 +415,8 @@ abstract class _OfferState implements OfferState {
   String get lenderAddress;
   @override
   int? get rentalPeriod;
+  @override
+  DateTime? get dueDate;
   @override
   int? get rentalPrice;
   @override

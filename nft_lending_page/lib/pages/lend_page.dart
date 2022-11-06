@@ -152,7 +152,7 @@ class LendPage extends HookConsumerWidget {
                 PrimaryButton("Lend", onPressed: isApproved.value ? () {
                   if (ref.read(walletProvider.notifier).isLogin()) {
                     ref
-                        .read(walletProvider.notifier)
+                        .read(offerProvider.notifier)
                         .offerToLend(contractAddress.value, tokenId.value,
                             rentalPeriod.value, rentalFee.value)
                         .then((bool result) {

@@ -17,6 +17,7 @@ abstract class OfferState with _$OfferState {
     @Default("") String imageUrl,
     @Default("") String lenderAddress,
     int? rentalPeriod,
+    DateTime? dueDate,
     int? rentalPrice,
   }) = _OfferState;
 }
