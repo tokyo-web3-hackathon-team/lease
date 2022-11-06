@@ -32,7 +32,9 @@ ProjectXはそうした課題を解決します。
 
 ### 補足
 
-[Appendix](./docs/appendix.md)
+[Appendix](./design/appendix.md)
+
+[シーケンス](./design/sequenceDiagram.md)
 
 ## 技術仕様など
 
@@ -62,7 +64,7 @@ ProjectXはそうした課題を解決します。
 
 [LeaseVault (Etherscan)](https://goerli.etherscan.io/address/0xF0550c4e121f18E3d8181371BE011178D2eeA4dF)
 
-[ドキュメント_gas代の試算](./docs/contract.md)
+[ドキュメント_gas代の試算](./design/contract.md)
 
 [実装_インターフェース](./contract-dev-env/contracts/ILeaseService.sol)
 
