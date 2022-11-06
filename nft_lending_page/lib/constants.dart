@@ -9,6 +9,6 @@ class AppConst {
 
   static const double padding = 10.0;
 
-  static const String leaseServiceContractAddress = "0x61739f5ee253a554FeC6c727611c17DD9A24a3f7";
+  static const String leaseServiceContractAddress = "0xE45D10bae4Aa5C9a8C9016A39dD899485D9deac3";
   static const String alchemyApiDomain = "eth-goerli.g.alchemy.com";
 }

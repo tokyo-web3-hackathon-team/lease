@@ -164,7 +164,7 @@ class WalletController extends StateNotifier<WalletState> {
     try {
       TransactionResponse tx = await nftContract.send(
         'approve',
-        ["0x61739f5ee253a554FeC6c727611c17DD9A24a3f7", tokenId],
+        [AppConst.leaseServiceContractAddress, tokenId],
       );
       print(
           "TxHash: ${tx
