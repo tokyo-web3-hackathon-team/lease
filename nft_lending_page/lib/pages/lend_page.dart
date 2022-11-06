@@ -57,67 +57,69 @@ class LendPage extends HookConsumerWidget {
           DateFormat('yyyy-MM-dd').format(defaultRentalPeriod);
     }, []);
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 30),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: CustomizedTextFormField(
-                hintText: 'contract address',
-                onChanged: (e) => contractAddress.value = e,
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 30),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: CustomizedTextFormField(
+                  hintText: 'contract address',
+                  onChanged: (e) => contractAddress.value = e,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: CustomizedTextFormField(
-                hintText: 'token id',
-                onChanged: (e) => tokenId.value = e,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: CustomizedTextFormField(
+                  hintText: 'token id',
+                  onChanged: (e) => tokenId.value = e,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: CustomizedTextFormField(
-                onTap: () async {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  await _getDate(context, rentalPeriod);
-                },
-                controller: textEditingController,
-                hintText: 'rental period',
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: CustomizedTextFormField(
+                  onTap: () async {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                    await _getDate(context, rentalPeriod);
+                  },
+                  controller: textEditingController,
+                  hintText: 'rental period',
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: CustomizedTextFormField(
-                inputFormatters: [
-                  FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
-                ],
-                hintText: 'rental fee',
-                onChanged: (e) => rentalFee.value = double.parse(e),
-                initialValue: rentalFee.value.toString(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: CustomizedTextFormField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
+                  ],
+                  hintText: 'rental fee',
+                  onChanged: (e) => rentalFee.value = double.parse(e),
+                  initialValue: rentalFee.value.toString(),
+                ),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 20),
-              child: CustomizedTextFormField(
-                enabled: false,
-                hintText: 'return fee:  xxx ETH',
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: CustomizedTextFormField(
+                  enabled: false,
+                  hintText: 'return fee:  xxx ETH',
+                ),
               ),
-            ),
-            PrimaryButton("Lend", onPressed: () {
-              ref.read(lendingRepositoryProvider).lend(
-                  contractAddress.value,
-                  tokenId.value,
-                  rentalPeriod.value,
-                  rentalFee.value,
-                  returnFee);
-            }),
-            PrimaryButton("Back", onPressed: () {
-              Navigator.pop(context);
-            })
-          ],
+              PrimaryButton("Lend", onPressed: () {
+                ref.read(lendingRepositoryProvider).lend(
+                    contractAddress.value,
+                    tokenId.value,
+                    rentalPeriod.value,
+                    rentalFee.value,
+                    returnFee);
+              }),
+              PrimaryButton("Back", onPressed: () {
+                Navigator.pop(context);
+              })
+            ],
+          ),
         ),
       ),
     );
