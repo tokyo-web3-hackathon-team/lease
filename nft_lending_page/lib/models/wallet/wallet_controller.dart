@@ -46,7 +46,7 @@ class WalletController extends StateNotifier<WalletState> {
       await ethereum!.walletSwitchChain(5);
     }
     String signedMessage =
-        await provider!.getSigner().signMessage("Login to NFT Fi");
+        await provider!.getSigner().signMessage("Login to NFTRental");
 
     //TODO 署名の検証
 
@@ -61,8 +61,8 @@ class WalletController extends StateNotifier<WalletState> {
     final connector = WalletConnect(
       uri: url,
       clientMeta: const PeerMeta(
-        name: 'NFT Fi',
-        description: 'NFT Fi Wallet App',
+        name: 'NFTRental',
+        description: 'NFTRental Wallet App',
         url: '',
         icons: [''],
       ),
