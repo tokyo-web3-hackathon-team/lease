@@ -1,9 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web3/ethereum.dart';
-import 'package:flutter_web3/flutter_web3.dart';
 import 'package:flutter_web3/flutter_web3.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/constants.dart';
@@ -51,7 +47,7 @@ class WalletController extends StateNotifier<WalletState> {
       await ethereum!.walletSwitchChain(5);
     }
     String signedMessage =
-    await provider!.getSigner().signMessage("Login to NFT Fi");
+        await provider!.getSigner().signMessage("Login to NFT Fi");
 
     //TODO 署名の検証
 
@@ -83,8 +79,7 @@ class WalletController extends StateNotifier<WalletState> {
       print(payload);
       final borrowerAddress = state.loginAddress;
       final address = await _getContractWalletAddress(borrowerAddress);
-      await connector.approveSession(
-          chainId: 5, accounts: [address]);
+      await connector.approveSession(chainId: 5, accounts: [address]);
     });
 
     connector.on('session_update', (payload) async {
@@ -174,8 +169,7 @@ class WalletController extends StateNotifier<WalletState> {
         [AppConst.leaseServiceContractAddress, tokenId],
       );
       print(
-          "TxHash: ${tx
-              .hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,");
+          "TxHash: ${tx.hash}, NFT Contract Address : $nftContractAddress, Token ID : $tokenId,");
     } catch (ex) {
       print("Fail to offer. ${ex.toString()}");
       return false;

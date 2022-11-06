@@ -14,7 +14,7 @@ class LendPage extends HookConsumerWidget {
   LendPage({super.key});
 
   final textEditingController = TextEditingController();
-  final returnFee = 0.05;
+  final returnFee = 0.005;
   final defaultRentalPeriod = DateTime.now().add(const Duration(days: 1));
   final hour = 23;
   final minute = 59;
@@ -105,7 +105,7 @@ class LendPage extends HookConsumerWidget {
               inputFormats: [
                 FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*$'))
               ],
-              hintText: 'Rental Fee [ETH] (You receive from borrower.)',
+              hintText: 'Rental Fee [ETH / Day] (You receive from borrower.)',
               onChanged: (e) => rentalFee.value = double.parse(e),
             ),
             const SizedBox(height: 20),

@@ -130,6 +130,7 @@ class OfferController extends StateNotifier<OffersState> {
           assetAddress: nftContractAddress,
           tokenId: int.parse(tokenId),
           rentalPeriod: toBlockNumber,
+          dueDate: await _convertBlockNumberToDueDate(toBlockNumber),
           rentalPrice: rentalFeeWei.toInt(),
         ),
       );
@@ -179,7 +180,7 @@ class OfferController extends StateNotifier<OffersState> {
 
   Future<DateTime> _convertBlockNumberToDueDate(int toBlockNumber) async {
     int fromBlockNumber = await provider!.getBlockNumber();
-    int diffDays = toBlockNumber - fromBlockNumber ~/ 15;
+    int diffDays = (toBlockNumber - fromBlockNumber) ~/ (15 * 86400);
 
     DateTime now = DateTime.now();
     DateTime dueDate =
