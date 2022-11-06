@@ -140,7 +140,8 @@ class OfferController extends StateNotifier<OffersState> {
     );
 
     int toBlockNumber = await _convertDueDateToBlockNumber(dueDate);
-    BigInt rentalFeeWei = EthUtils.parseEther(rentalFee.toString()).toBigInt;
+    rentalFee = rentalFee / (86400 / 15); // ETH/block
+    BigInt rentalFeeWei = EthUtils.parseEther(rentalFee.toString()).toBigInt; // wei/block
     try {
       TransactionResponse tx = await leaseContract.send(
         'offerLending',
