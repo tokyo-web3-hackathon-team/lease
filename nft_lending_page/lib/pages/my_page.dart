@@ -26,15 +26,25 @@ class MyPage extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(
               horizontal: AppConst.padding * 2,
             ),
-            child: PrimaryButton(
-              "connect to Dapps",
-              onPressed: () {
-                ref
-                    .watch(walletProvider.notifier)
-                    .connectDapps(walletConnectUrl.value);
-              },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: PrimaryButton(
+                    "connect to Dapps",
+                    onPressed: () {
+                      ref
+                          .watch(walletProvider.notifier)
+                          .connectDapps(walletConnectUrl.value);
+                    },
+                  ),
+                ),
+                NftsList()
+              ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -52,6 +62,8 @@ class NftsList extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final leaseType = useState(LeaseType.borrow);
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.only(right: 16),
