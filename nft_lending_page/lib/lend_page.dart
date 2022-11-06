@@ -10,6 +10,9 @@ class LendPage extends HookConsumerWidget {
   final textEditingController = TextEditingController();
   final returnFee = 0.01;
   final defaultRentalPeriod = DateTime.now().add(const Duration(days: 1));
+  final hour = 23;
+  final minute = 59;
+  final second = 59;
 
   Future _getDate(
       BuildContext context, ValueNotifier<DateTime> rentalPeriod) async {
@@ -26,7 +29,8 @@ class LendPage extends HookConsumerWidget {
     );
     if (newDate != null) {
       textEditingController.text = DateFormat('yyyy-MM-dd').format(newDate);
-      rentalPeriod.value = newDate;
+      rentalPeriod.value = DateTime(
+          newDate.year, newDate.month, newDate.day, hour, minute, second);
     } else {
       return;
     }
@@ -36,7 +40,13 @@ class LendPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final contractAddress = useState("");
     final tokenId = useState("");
-    final rentalPeriod = useState(defaultRentalPeriod);
+    final rentalPeriod = useState(DateTime(
+        defaultRentalPeriod.year,
+        defaultRentalPeriod.month,
+        defaultRentalPeriod.day,
+        hour,
+        minute,
+        second));
     final rentalFee = useState(0.00);
 
     useEffect(() {
