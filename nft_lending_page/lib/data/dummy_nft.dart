@@ -1,64 +1,86 @@
+import 'package:nft_lending_page/models/offer.dart';
+
 import '../models/nft.dart';
 
-List<NFT> dummyNFT = [
-  NFT(
+List<Offer> dummyOffer = [
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post1.jpg',
-    userAddress: 'User.name.2021',
-    likes: 230,
-    comments: 15,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post2.jpg',
-    userAddress: 'User.name.2021',
-    likes: 80,
-    comments: 5,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post3.jpg',
-    userAddress: 'User.name.2021',
-    likes: 1120,
-    comments: 74,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post4.jpg',
-    userAddress: 'User.name.2021',
-    likes: 450,
-    comments: 32,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post5.jpg',
-    userAddress: 'User.name.2021',
-    likes: 2899,
-    comments: 190,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post6.jpg',
-    userAddress: 'User.name.2021',
-    likes: 2899,
-    comments: 190,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post7.jpg',
-    userAddress: 'User.name.2021',
-    likes: 2899,
-    comments: 190,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post8.jpg',
-    userAddress: 'User.name.2021',
-    likes: 2899,
-    comments: 190,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post9.jpg',
-    userAddress: 'User.name.2021',
-    likes: 2899,
-    comments: 190,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
-  NFT(
+  Offer(
+    assetAddress: "0x5e7e3e8723fec7c6aac8ee5d2e2bc5875ab3e107",
+    tokenId: 1,
     imageUrl: 'assets/dummy/post10.jpg',
-    userAddress: 'User.name.2021',
-    likes: 2899,
-    comments: 190,
+    lenderAddress: "0xcF6f9Cbd9342Ae775e7e71c1914AEB3aBD1592C5",
+    rentalPeriod: DateTime.now().millisecondsSinceEpoch,
+    rentalPrice: 1,
   ),
 ];
