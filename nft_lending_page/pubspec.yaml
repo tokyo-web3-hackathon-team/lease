@@ -36,7 +36,6 @@ flutter:
   assets:
     - assets/nft/
     - assets/icon/
-    - assets/env/.env
   # fonts:
   #   - family: Schyler
   #     fonts:
