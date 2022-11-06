@@ -15,19 +15,16 @@ class PrimaryButton extends ElevatedButton {
                 height: 35,
                 padding:
                     const EdgeInsets.symmetric(horizontal: AppConst.padding),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(width: AppConst.padding),
-                      Text(
-                        text ?? '',
-                        style: const TextStyle(
-                          fontSize: 14,
-                        ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      text ?? '',
+                      style: const TextStyle(
+                        fontSize: 14,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

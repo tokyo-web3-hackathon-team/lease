@@ -95,17 +95,58 @@ class FeedCard extends StatelessWidget {
           widthFactor: 1,
           child: Container(
             width: 100,
-            height: 100,
+            height: 160,
             decoration: const BoxDecoration(
               color: AppConst.colorGreyDark,
               borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(20),
                   bottomLeft: Radius.circular(20)),
             ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  const RentalCondition(
+                      title: "rental period", value: "2022/11/16"),
+                  const RentalCondition(
+                      title: "rental fee", value: "0.1 ETH / day"),
+                  const RentalCondition(title: "return fee", value: "0.1 ETH"),
+                  const RentalCondition(
+                      title: "total fee", value: "1 ETH / 10days"),
+                  PrimaryButton("Borrow", onPressed: () {
+                    //
+                  })
+                ],
+              ),
+            ),
           ),
         ),
         const SizedBox(height: AppConst.padding),
       ],
+    );
+  }
+}
+
+class RentalCondition extends StatelessWidget {
+  const RentalCondition({
+    Key? key,
+    required this.title,
+    this.value,
+  }) : super(key: key);
+  final String title;
+  final dynamic value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title),
+          Text(value),
+        ],
+      ),
     );
   }
 }
