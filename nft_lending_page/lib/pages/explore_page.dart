@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
-import 'package:nft_lending_page/components/explore.dart';
 import 'package:nft_lending_page/components/primary_button.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
@@ -34,8 +33,8 @@ class ExplorePage extends HookConsumerWidget {
         Expanded(
           child: CustomScrollView(
             controller: homeScrollController,
-            slivers: const [
-              Explore(),
+            slivers: [
+              _buildLendingList(context),
             ],
           ),
         ),
