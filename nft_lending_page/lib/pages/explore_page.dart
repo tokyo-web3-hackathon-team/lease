@@ -53,10 +53,6 @@ class ExplorePage extends HookConsumerWidget {
 
   _buildLendingList(BuildContext context, WidgetRef ref) {
     final offers = ref.watch(offerProvider).offers;
-    if (offers.isNotEmpty) {
-      debugPrint("offers = ${offers}");
-      debugPrint("assetAddress = ${offers[0].assetAddress}");
-    }
     ScreenStatus screenStatus = ScreenSize.getScreenStatus(context);
     return SliverPadding(
       padding: const EdgeInsets.symmetric(
@@ -69,7 +65,6 @@ class ExplorePage extends HookConsumerWidget {
         mainAxisSpacing: AppConst.padding,
         itemCount: offers.length,
         itemBuilder: (ctx, index) {
-          debugPrint("itemBuilder is called");
           return FeedCard(offer: offers[index]);
         },
       ),
@@ -100,17 +95,15 @@ class FeedCard extends StatelessWidget {
         ? DateFormat('yyyy-MM-dd')
             .format(DateTime.fromMillisecondsSinceEpoch(offer.rentalPeriod!))
         : "";
-    debugPrint("imageUrl = ${offer.imageUrl}");
     return Column(
       children: [
         ClipRRect(
-          borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-          child: Image.asset(
-            offer.imageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            child: Image.network(
+              offer.imageUrl,
+              fit: BoxFit.cover,
+            )),
         FractionallySizedBox(
           widthFactor: 1,
           child: Container(

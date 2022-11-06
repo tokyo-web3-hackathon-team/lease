@@ -59,9 +59,8 @@ class OfferController extends StateNotifier<OffersState> {
           rentalPrice: rentalPrice);
       offers.add(offer);
     }
-    // return offersState.copyWith(offers: offers);
 
-    state.copyWith(offers: offers);
+    state = state.copyWith(offers: offers);
   }
 
   Future<bool> _isActiveOffer(String lender, String collection, int tokenId,
