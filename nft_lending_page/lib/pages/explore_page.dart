@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
 import 'package:nft_lending_page/components/explore.dart';
 import 'package:nft_lending_page/components/primary_button.dart';
+import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
 
 import '../constants.dart';
@@ -23,7 +24,9 @@ class ExplorePage extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            PrimaryButton("Lend", onPressed: () {}),
+            PrimaryButton("Lend", onPressed: () {
+              Navigator.pushNamed(context, Routes.lendPage);
+            }),
             const SizedBox(width: AppConst.padding * 2),
           ],
         ),

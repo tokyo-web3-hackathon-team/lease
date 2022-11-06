@@ -9,7 +9,7 @@ class PrimaryButton extends ElevatedButton {
           autofocus: autofocus,
           onPressed: onPressed,
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 200),
+            constraints: const BoxConstraints(maxWidth: 150),
             child: Expanded(
               child: Container(
                 height: 35,

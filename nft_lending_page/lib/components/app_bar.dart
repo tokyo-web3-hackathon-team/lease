@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nft_lending_page/components/primary_button.dart';
 
 import '../constants.dart';
 import 'app_bar_menu.dart';
@@ -14,7 +15,7 @@ class AppBar extends StatelessWidget {
       height: 80,
       color: AppConst.colorGreyDark,
       padding: const EdgeInsets.symmetric(
-        horizontal: AppConst.padding * 1.5,
+        horizontal: AppConst.padding * 2,
         vertical: AppConst.padding * 2,
       ),
       child: Row(
@@ -25,57 +26,9 @@ class AppBar extends StatelessWidget {
             SizedBox(width: AppConst.padding * 10),
             AppBarMenu(),
           ]),
-          const ConnectToWallet(),
+          PrimaryButton("Connect to Wallet", onPressed: () {}),
         ],
       ),
-    );
-  }
-}
-
-class ConnectToWallet extends StatelessWidget {
-  const ConnectToWallet({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 35,
-      padding: const EdgeInsets.symmetric(horizontal: AppConst.padding),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        gradient: const LinearGradient(
-          colors: [
-            AppConst.colorRedOrange,
-            AppConst.colorRedOrange,
-            AppConst.colorRedOrange,
-            AppConst.colorOrange,
-          ],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.white24,
-            blurRadius: 10,
-          )
-        ],
-      ),
-      child: Center(
-          child: Row(
-        children: const [
-          Icon(
-            Icons.account_balance_wallet_outlined,
-            color: Colors.white,
-            size: 16,
-          ),
-          SizedBox(width: AppConst.padding),
-          Text(
-            'Connect to Wallet',
-            style: TextStyle(
-              fontSize: 14,
-            ),
-          ),
-        ],
-      )),
     );
   }
 }

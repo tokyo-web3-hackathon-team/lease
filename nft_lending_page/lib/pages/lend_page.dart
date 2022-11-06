@@ -113,6 +113,9 @@ class LendPage extends HookConsumerWidget {
                   rentalPeriod.value,
                   rentalFee.value,
                   returnFee);
+            }),
+            PrimaryButton("Back", onPressed: () {
+              Navigator.pop(context);
             })
           ],
         ),
