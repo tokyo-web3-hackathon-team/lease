@@ -13,7 +13,7 @@ import 'package:nft_lending_page/models/offer/offer_state.dart';
 class OfferController extends StateNotifier<OffersState> {
   OfferController() : super(const OffersState());
 
-  Future<List<Offer>> getOffers() async {
+  Future<void> getOffers() async {
     final web3provider = Web3Provider(ethereum!);
     const leaseContractAddress = AppConst.leaseServiceContractAddress;
     final contract = Contract(
@@ -23,7 +23,9 @@ class OfferController extends StateNotifier<OffersState> {
     );
     final filter = contract.getFilter('Offer');
     final events = await contract.queryFilter(filter);
-    final offers = <Offer>[];
+    // TODO 貸し出し済みのeventを検知して差し引きする -> スマコン側に確認しにいく
+    // "event Offer(address collection, uint256 tokenId, uint256 price, uint until)"
+    final List<OfferState> offers = [];
     for (int i = 0; i < events.length; i++) {
       // "event Offer(address lender, address collection, uint256 tokenId, uint256 price, uint until)"
       var lenderAddress = events[i].args[0].toString();
@@ -48,7 +50,7 @@ class OfferController extends StateNotifier<OffersState> {
       _response(response);
       var responseJson = json.decode(response.body);
       final imageUrl = responseJson["metadata"]["image"];
-      final offer = Offer(
+      final offer = OfferState(
           assetAddress: contractAddress,
           tokenId: tokenId,
           imageUrl: imageUrl,
@@ -57,7 +59,9 @@ class OfferController extends StateNotifier<OffersState> {
           rentalPrice: rentalPrice);
       offers.add(offer);
     }
-    return offers;
+    // return offersState.copyWith(offers: offers);
+
+    state.copyWith(offers: offers);
   }
 
   Future<bool> _isActiveOffer(String lender, String collection, int tokenId,

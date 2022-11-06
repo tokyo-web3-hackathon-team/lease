@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:nft_lending_page/components/app_bar.dart' as app;
 import 'package:nft_lending_page/components/primary_button.dart';
 import 'package:nft_lending_page/models/offer.dart';
+import 'package:nft_lending_page/models/offer/offer_state.dart';
 import 'package:nft_lending_page/pages/routes.dart';
 import 'package:nft_lending_page/pages/screen_status.dart';
+import 'package:nft_lending_page/providers.dart';
 
 import '../constants.dart';
-import '../data/dummy_nft.dart';
-import '../models/nft.dart';
 
 class ExplorePage extends HookConsumerWidget {
   const ExplorePage({Key? key}) : super(key: key);
@@ -18,6 +19,12 @@ class ExplorePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ScrollController homeScrollController = ScrollController();
+    final offerRepository = ref.watch(offerProvider.notifier);
+
+    useEffect(() {
+      offerRepository.getOffers();
+    }, []);
+
     return Column(
       children: [
         const app.AppBar(),
@@ -36,7 +43,7 @@ class ExplorePage extends HookConsumerWidget {
           child: CustomScrollView(
             controller: homeScrollController,
             slivers: [
-              _buildLendingList(context),
+              _buildLendingList(context, ref),
             ],
           ),
         ),
@@ -44,7 +51,12 @@ class ExplorePage extends HookConsumerWidget {
     );
   }
 
-  _buildLendingList(BuildContext context) {
+  _buildLendingList(BuildContext context, WidgetRef ref) {
+    final offers = ref.watch(offerProvider).offers;
+    if (offers.isNotEmpty) {
+      debugPrint("offers = ${offers}");
+      debugPrint("assetAddress = ${offers[0].assetAddress}");
+    }
     ScreenStatus screenStatus = ScreenSize.getScreenStatus(context);
     return SliverPadding(
       padding: const EdgeInsets.symmetric(
@@ -55,9 +67,10 @@ class ExplorePage extends HookConsumerWidget {
         crossAxisCount: _getCountForScreenType(screenStatus),
         crossAxisSpacing: AppConst.padding,
         mainAxisSpacing: AppConst.padding,
-        itemCount: dummyOffer.length,
+        itemCount: offers.length,
         itemBuilder: (ctx, index) {
-          return FeedCard(offer: dummyOffer[index]);
+          debugPrint("itemBuilder is called");
+          return FeedCard(offer: offers[index]);
         },
       ),
     );
@@ -74,7 +87,7 @@ class ExplorePage extends HookConsumerWidget {
 }
 
 class FeedCard extends StatelessWidget {
-  final Offer offer;
+  final OfferState offer;
 
   const FeedCard({
     Key? key,
@@ -83,8 +96,11 @@ class FeedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String dateTime = DateFormat('yyyy-MM-dd')
-        .format(DateTime.fromMillisecondsSinceEpoch(offer.rentalPeriod));
+    String dateTime = offer.rentalPeriod != null
+        ? DateFormat('yyyy-MM-dd')
+            .format(DateTime.fromMillisecondsSinceEpoch(offer.rentalPeriod!))
+        : "";
+    debugPrint("imageUrl = ${offer.imageUrl}");
     return Column(
       children: [
         ClipRRect(
