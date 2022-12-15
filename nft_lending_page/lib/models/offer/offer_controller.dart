@@ -42,7 +42,7 @@ class OfferController extends StateNotifier<OffersState> {
         continue;
       }
       final url = Uri.https(AppConst.alchemyApiDomain,
-          "nft/v2/VDzuc6T_BZtAlBf0MnsFZrt-OABQ7E3A/getNFTMetadata", {
+          "v2/PTqxvPolbKKJqv-SEHF8DGLmH4Nn3FuF/getNFTMetadata", {
         "contractAddress": contractAddress,
         "tokenId": tokenId.toString(),
         "refreshCache": false.toString()
@@ -170,16 +170,18 @@ class OfferController extends StateNotifier<OffersState> {
     return true;
   }
 
-  Future<bool> borrow(
-      String nftContractAddress, String tokenId, DateTime dueDate, BigInt price) async {
+  Future<bool> borrow(String nftContractAddress, String tokenId,
+      DateTime dueDate, BigInt price) async {
     final leaseContract = Contract(
       AppConst.leaseServiceContractAddress,
       Interface(leaseServiceAbi),
       provider!.getSigner(),
     );
 
-    int periodBlockNumber = await _convertDueDateToBlockNumber(dueDate) - await provider!.getBlockNumber();
-    BigInt payment = EthUtils.parseEther("0.005").toBigInt + price * BigInt.from(periodBlockNumber);
+    int periodBlockNumber = await _convertDueDateToBlockNumber(dueDate) -
+        await provider!.getBlockNumber();
+    BigInt payment = EthUtils.parseEther("0.005").toBigInt +
+        price * BigInt.from(periodBlockNumber);
     try {
       TransactionResponse tx = await leaseContract.send(
         'borrow',
